@@ -1,0 +1,33 @@
+.dashboard-container {
+    max-width: 12000px;
+    margin: 20px auto;
+    padding: 0 15px;
+    background-color: darkolivegreen;
+    color: rgb(255, 255, 255);
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.dashboard-welcome {
+    font-size: 24px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    margin-bottom: 20px;
+}
+
+.order-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.order-item {
+    background-color: rgb(255, 255, 255);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    margin-bottom: 10px;
+    transition: transform 0.3s;
+}
+
+.order-item:hover {
+    transform: translateY(-5px);
+}

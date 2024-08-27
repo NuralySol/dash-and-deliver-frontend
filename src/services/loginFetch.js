@@ -5,12 +5,18 @@ const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}`.replace(/\/+$/, '
 export const fetchData = async (endpoint, options = {}) => {
   try {
     // Combine BASE_URL with endpoint
-    const response = await fetch(`${BASE_URL}${endpoint}`, options);
+    const fullUrl = `${BASE_URL}${endpoint}`;
+    console.log('Fetching data from:', fullUrl); // Debugging log for the URL
+
+    const response = await fetch(fullUrl, options);
+
+    console.log('Response status:', response.status); // Log the response status
 
     // Check if the response is not ok (e.g., 4xx or 5xx status codes)
     if (!response.ok) {
-      const errorData = await response.json(); // Parse the error response
-      throw new Error(errorData.message || 'An error occurred'); // Throw error with message
+      const errorData = await response.json();
+      console.error('Error Response:', errorData); // Log the error response
+      throw new Error(errorData.message || 'An error occurred');
     }
 
     // Return the parsed JSON response
@@ -40,19 +46,4 @@ export const loginUser = async (credentials) => {
   }
 
   return response;
-};
-
-// Function to fetch protected data
-export const fetchProtectedData = async () => {
-  const token = localStorage.getItem('token'); // Retrieve JWT from localStorage
-
-  const options = {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`, // Send JWT in Authorization header
-    },
-  };
-
-  return await fetchData('/protected-endpoint', options); // Replace with actual endpoint
 };
