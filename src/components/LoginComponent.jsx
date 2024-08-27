@@ -1,29 +1,39 @@
 import { useState } from 'react';
-import { RegisterController } from '../controllers/registerController.js';
+import { loginUser } from '../services/loginFetch.js';
 import { useNavigate } from 'react-router-dom'; 
-import './RegisterComponent.css';
 
-const RegisterComponent = () => {
+
+const LoginComponent = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const { handleRegister, isLoading, error } = RegisterController();
+    const [error, setError] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const userData = { username, password };
-        const registeredUser = await handleRegister(userData);
+        setIsLoading(true);
+        setError(null);
 
-        if (registeredUser) {
-            navigate('/dashboard'); // Redirect to dashboard after successful registration
+        try {
+            const credentials = { username, password };
+            const loggedInUser = await loginUser(credentials);
+
+            if (loggedInUser) {
+                navigate('/dashboard'); // Redirect to dashboard after successful login
+            }
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setIsLoading(false);
         }
     };
 
     return (
         <div>
             <NavBar /> {/* Navigation bar */}
-            <div className="register-container">
-                <h2>Register</h2>
+            <div className="login-container">
+                <h2>Login</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label>Username:</label>
@@ -44,7 +54,7 @@ const RegisterComponent = () => {
                         />
                     </div>
                     <button type="submit" disabled={isLoading}>
-                        {isLoading ? 'Registering...' : 'Register'}
+                        {isLoading ? 'Logging in...' : 'Login'}
                     </button>
                     {error && <p className="error">{error}</p>}
                 </form>
@@ -65,4 +75,4 @@ const NavBar = () => {
     );
 };
 
-export default RegisterComponent;
+export default LoginComponent;
