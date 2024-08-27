@@ -16,6 +16,7 @@ export const LoginController = () => {
         } catch (err) {
             setIsLoading(false);
             setError(err.message || 'Login failed');
+            return null; // Return null or handle the error
         }
     };
 

@@ -14,10 +14,10 @@ export const RegisterController = () => {
       setIsLoading(false);
       return data;
     } catch (err) {
-      console.error('Registration error:', err); // Logging for debugging
+      console.error('Registration error:', err); 
       setIsLoading(false);
       setError(err.message || 'Registration failed');
-      return null; // Return null or handle the error
+      return null; 
     }
   };
 
