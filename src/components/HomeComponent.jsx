@@ -29,6 +29,9 @@ const HomeComponent = () => {
             <p className="register-link">
                 Don't have an account? <Link to="/register">Register here</Link>
             </p>
+            <p className="login-link">
+                Have an account already <Link to="/login">Login here</Link>
+            </p>
         </div>
     );
 };

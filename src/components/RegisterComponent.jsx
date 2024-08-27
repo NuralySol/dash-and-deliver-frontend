@@ -15,7 +15,7 @@ const RegisterComponent = () => {
         const registeredUser = await handleRegister(userData);
 
         if (registeredUser) {
-            navigate('/dashboard'); // Redirect to dashboard after successful registration
+            navigate('/login'); // Redirect to dashboard after successful registration
         }
     };
 
