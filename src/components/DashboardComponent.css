@@ -1,33 +1,71 @@
+/* DashboardComponent.css */
+
 .dashboard-container {
-    max-width: 12000px;
-    margin: 20px auto;
-    padding: 0 15px;
-    background-color: darkolivegreen;
-    color: rgb(255, 255, 255);
-    font-family: 'Times New Roman', Times, serif;
+    padding: 20px;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    color: white;
+    padding: 10px;
+}
+
+.navbar-brand {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.navbar-menu {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.navbar-menu li {
+    display: inline;
+}
+
+.navbar-menu a {
+    color: white;
+    text-decoration: none;
+    padding: 5px 10px;
+}
+
+.navbar-menu a:hover {
+    background-color: #555;
+    border-radius: 5px;
+}
+
+.search-container {
+    margin: 20px 0;
+}
+
+.search-bar {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
 .dashboard-welcome {
-    font-size: 24px;
-    font-weight: bold;
-    color: rgb(255, 255, 255);
-    margin-bottom: 20px;
+    font-size: 2em;
+}
+
+.dashboard-error {
+    color: red;
 }
 
 .order-list {
-    list-style-type: none;
+    list-style: none;
     padding: 0;
 }
 
 .order-item {
-    background-color: rgb(255, 255, 255);
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    padding: 16px;
+    border: 1px solid #ccc;
+    padding: 10px;
     margin-bottom: 10px;
-    transition: transform 0.3s;
-}
-
-.order-item:hover {
-    transform: translateY(-5px);
+    border-radius: 5px;
 }
