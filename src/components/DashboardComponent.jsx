@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { jwtDecode } from 'jwt-decode'; // Make sure this is installed and correctly imported
+import { jwtDecode } from 'jwt-decode'; // Ensure this is installed and correctly imported
 import { fetchData } from '../services/loginFetch';
 import './DashboardComponent.css';
 
@@ -8,7 +8,9 @@ const DashboardComponent = () => {
     const [error, setError] = useState(null);
     const [username, setUsername] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
+    const [location, setLocation] = useState('');
     const [filteredOrders, setFilteredOrders] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState('All');
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -53,41 +55,121 @@ const DashboardComponent = () => {
     const handleSearchChange = (event) => {
         const term = event.target.value;
         setSearchTerm(term);
+        filterOrders(term, location, selectedCategory);
+    };
 
-        // Filter orders based on the search term
-        if (term) {
-            const filtered = orders.filter(order =>
-                order.description.toLowerCase().includes(term.toLowerCase())
-            );
-            setFilteredOrders(filtered);
-        } else {
-            setFilteredOrders(orders);
-        }
+    // Handle address input change
+    const handleLocationChange = (event) => {
+        const loc = event.target.value;
+        setLocation(loc);
+        filterOrders(searchTerm, loc, selectedCategory);
+    };
+
+    // Handle category selection
+    const handleCategoryChange = (category) => {
+        setSelectedCategory(category);
+        filterOrders(searchTerm, location, category);
+    };
+
+    // Filter orders based on search term, location, and category
+    const filterOrders = (term, loc, category) => {
+        const filtered = orders.filter(order =>
+            (category === 'All' || order.category === category) &&
+            order.description.toLowerCase().includes(term.toLowerCase()) &&
+            order.location.toLowerCase().includes(loc.toLowerCase())
+        );
+        setFilteredOrders(filtered);
     };
 
     return (
         <div className="dashboard-container">
             <nav className="navbar">
-                <div className="navbar-brand">DashAndDeliver</div>
-                <ul className="navbar-menu">
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#orders">Orders</a></li>
-                    <li><a href="#profile">Profile</a></li>
-                    <li><a href="#signout">Sign Out</a></li>
+                <div className="navbar-search-container">
+                    <input
+                        type="text"
+                        placeholder="Search for food..."
+                        value={searchTerm}
+                        onChange={handleSearchChange}
+                        className="search-bar"
+                    />
+                    <div className="location-dropdown">
+                        <img src="location.png" alt="Location" className="location-icon" />
+                        <input
+                            type="text"
+                            placeholder="Enter address..."
+                            value={location}
+                            onChange={handleLocationChange}
+                            className="location-address"
+                        />
+                    </div>
+                </div>
+            </nav>
+
+            <nav className="category-navbar">
+                <ul className="category-menu">
+                    <li onClick={() => handleCategoryChange('Fast Food')} className={selectedCategory === 'Fast Food' ? 'active' : ''}>
+                        <img src="fast-food.png" alt="Fast Food" />
+                        <span>Fast Food</span>
+                    </li>
+                    <li onClick={() => handleCategoryChange('Indian')} className={selectedCategory === 'Indian' ? 'active' : ''}>
+                        <img src="papri-chaat.png" alt="Indian" />
+                        <span>Indian</span>
+                    </li>
+                    <li onClick={() => handleCategoryChange('Chinese')} className={selectedCategory === 'Chinese' ? 'active' : ''}>
+                        <img src="buns.png" alt="Chinese" />
+                        <span>Chinese</span>
+                    </li>
+                    <li onClick={() => handleCategoryChange('Italian')} className={selectedCategory === 'Italian' ? 'active' : ''}>
+                        <img src="spaghetti.png" alt="Italian" />
+                        <span>Italian</span>
+                    </li>
+                    <li onClick={() => handleCategoryChange('Mexican')} className={selectedCategory === 'Mexican' ? 'active' : ''}>
+                        <img src="mexican-food.png" alt="Mexican" />
+                        <span>Mexican</span>
+                    </li>
+                    <li onClick={() => handleCategoryChange('Breakfast')} className={selectedCategory === 'Breakfast' ? 'active' : ''}>
+                        <img src="breakfast.png" alt="Breakfast" />
+                        <span>Breakfast</span>
+                    </li>
+                    <li onClick={() => handleCategoryChange('Vegan')} className={selectedCategory === 'Vegan' ? 'active' : ''}>
+                        <img src="vegetarian.png" alt="Vegan" />
+                        <span>Vegan</span>
+                    </li>
+                    <li onClick={() => handleCategoryChange('Thai')} className={selectedCategory === 'Thai' ? 'active' : ''}>
+                        <img src="mango.png" alt="Thai" />
+                        <span>Thai</span>
+                    </li>
+                    <li onClick={() => handleCategoryChange('Halal')} className={selectedCategory === 'Halal' ? 'active' : ''}>
+                        <img src="halal.png" alt="Halal" />
+                        <span>Halal</span>
+                    </li>
+                    <li onClick={() => handleCategoryChange('Kosher')} className={selectedCategory === 'Kosher' ? 'active' : ''}>
+                        <img src="kosher.png" alt="Kosher" />
+                        <span>Kosher</span>
+                    </li>
+                    <li onClick={() => handleCategoryChange('Salad')} className={selectedCategory === 'Salad' ? 'active' : ''}>
+                        <img src="salad.png" alt="Salad" />
+                        <span>Salad</span>
+                    </li>
+                    <li onClick={() => handleCategoryChange('Seafood')} className={selectedCategory === 'Seafood' ? 'active' : ''}>
+                        <img src="seafood.png" alt="Seafood" />
+                        <span>Seafood</span>
+                    </li>
+                    <li onClick={() => handleCategoryChange('Coffee')} className={selectedCategory === 'Coffee' ? 'active' : ''}>
+                        <img src="coffee-cup.png" alt="Coffee" />
+                        <span>Coffee</span>
+                    </li>
+                    <li onClick={() => handleCategoryChange('Sushi')} className={selectedCategory === 'Sushi' ? 'active' : ''}>
+                        <img src="sushi.png" alt="Sushi" />
+                        <span>Sushi</span>
+                    </li>
+                    <li onClick={() => handleCategoryChange('Sandwiches')} className={selectedCategory === 'Sandwiches' ? 'active' : ''}>
+                        <img src="sandwich.png" alt="Sandwiches" />
+                        <span>Sandwiches</span>
+                    </li>
                 </ul>
             </nav>
 
-            <div className="search-container">
-                <input
-                    type="text"
-                    placeholder="Search for food..."
-                    value={searchTerm}
-                    onChange={handleSearchChange}
-                    className="search-bar"
-                />
-            </div>
-
-            <h2 className="dashboard-welcome">Welcome, {username}!</h2>
             {error && <p className="dashboard-error">{error}</p>}
             <ul className="order-list">
                 {filteredOrders.map(order => (
@@ -99,3 +181,4 @@ const DashboardComponent = () => {
 };
 
 export default DashboardComponent;
+
