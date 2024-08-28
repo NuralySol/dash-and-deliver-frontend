@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { jwtDecode } from "jwt-decode"; // Make sure this is installed and correctly imported
+import { jwtDecode } from "jwt-decode";
 import { fetchData } from "../services/loginFetch";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -14,11 +14,12 @@ import {
   faSearch,
   faQuestionCircle,
 } from "@fortawesome/free-solid-svg-icons";
-import CardComponent from "./CardComponent";
+import CardComponent from "./CardComponent.jsx";
 import "./DashboardComponent.css";
 
 const DashboardComponent = () => {
   const [orders, setOrders] = useState([]);
+  const [restaurants, setRestaurants] = useState([]);
   const [error, setError] = useState(null);
   const [username, setUsername] = useState("");
 
@@ -57,8 +58,19 @@ const DashboardComponent = () => {
       }
     };
 
-    loadOrders(); // Fetch orders
-  }, []);
+    const loadRestaurants = async () => {
+        try {
+          const data = await fetchData("/restaurants"); // Fetch restaurants data
+          setRestaurants(data);
+        } catch (err) {
+          console.error("Error loading restaurants:", err.message);
+          setError(err.message);
+        }
+      };
+  
+      loadOrders(); // Fetch orders
+      loadRestaurants(); // Fetch restaurants
+    }, []);
 
   return (
     <div className="dashboard-wrapper">
@@ -134,7 +146,7 @@ const DashboardComponent = () => {
       <div className="dashboard-container">
       <h2 className="dashboard-welcome">Welcome, {username}!</h2>
       {error && <p className="dashboard-error">{error}</p>}
-        <CardComponent />
+      <CardComponent restaurants={restaurants} />
         <ul className="order-list">
           {orders.map((order) => (
             <li key={order.id} className="order-item">

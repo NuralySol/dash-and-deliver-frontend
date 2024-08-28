@@ -1,20 +1,6 @@
 import "./CardComponent.css";
 
-const CardComponent = () => {
-  const restaurants = [
-    {
-      id: 1,
-      name: "Restaurant 1",
-      address: "123 data st",
-      image: "https://via.placeholder.com/250",
-    },
-    {
-      id: 2,
-      name: "Restaurant 2",
-      address: "456 silly st",
-      image: "https://via.placeholder.com/250",
-    },
-  ];
+const CardComponent = ({ restaurants = [] }) => {
 
   return (
     <>
