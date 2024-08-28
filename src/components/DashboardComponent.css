@@ -1,62 +1,129 @@
-/* DashboardComponent.css */
-
-/* Existing styles */
-.dashboard-container {
-    padding: 20px;
+/* Ensure that the body and html take up the full height */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
+/* Navbar styles */
 .navbar {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    align-items: center; /* Align items vertically */
     background-color: rgb(8, 183, 151);
     color: white;
     padding: 10px;
-    position: relative; /* Ensures the container can be used for positioning */
-    width: 100%; /* Ensures the navbar takes the full width */
+    position: fixed; /* Fixed positioning to keep it at the top */
+    top: 0;
+    left: 0;
+    width: 100%; /* Ensure it spans the full width */
     box-sizing: border-box; /* Includes padding and border in the width calculation */
+    z-index: 1000; /* Ensure it's above other content */
 }
 
-.navbar-brand {
-    font-size: 1.5em;
-    font-weight: bold;
+/* Navbar logo */
+.navbar-logo {
+    width: 140px; /* Adjust width as needed */
+    height: 60px; /* Maintain aspect ratio */
+    margin-right: 20px; /* Space between logo and search bar */
 }
 
-.navbar-menu {
-    list-style: none;
-    display: flex;
-    gap: 20px;
+/* Navbar menu and search container */
+.navbar-menu,
+.navbar-search-container {
+    margin-left: auto; /* Align these to the right */
 }
 
-.navbar-menu li {
-    display: inline;
-}
-
-.navbar-menu a {
-    color: white;
-    text-decoration: none;
-    padding: 5px 10px;
-}
-
-.navbar-menu a:hover {
-    background-color: #555;
-    border-radius: 5px;
-}
-
-/* Style adjustments for search and location inputs in navbar */
+/* Adjust search and location styles in the navbar */
 .navbar-search-container {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 10px; /* Space between search bar and cart icon */
+    flex: 1; /* Allow search container to take available space */
 }
 
+/* Search bar styling */
 .search-bar {
     padding: 5px;
     border-radius: 5px;
     border: 1px solid #ccc;
-    width: 200px; /* Adjust width as needed */
+    width: calc(100% - 100px); /* Adjust width considering space for the cart icon */
+    font-family: inherit;
 }
 
+/* Cart icon styling */
+.cart-icon {
+    width: 24px; /* Adjust size as needed */
+    height: 24px; /* Adjust size as needed */
+    margin-left: 10px; /* Space between address input and cart icon */
+    cursor: pointer; /* Add pointer cursor for better UX */
+}
+
+/* Cart icon hover effect */
+.cart-icon:hover {
+    opacity: 0.8; /* Slightly dim the icon on hover */
+}
+
+/* Category navbar styles */
+.category-navbar {
+    padding: 10px 0; /* Padding for spacing */
+    position: fixed; /* Fixed positioning to keep it below the main navbar */
+    top: 90px; /* Position it directly below the navbar */
+    left: 0;
+    width: 100%; /* Ensure it spans the full width */
+    box-sizing: border-box; /* Includes padding and border in the width calculation */
+    z-index: 999; /* Ensure it is below the main navbar but above other content */
+    border: none; /* Remove any border */
+}
+
+/* Category menu styles */
+.category-menu {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    padding: 0;
+    margin: 0;
+    justify-content: center; /* Center the category items */
+}
+
+/* Individual category item */
+.category-menu li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    position: relative; /* Ensure positioning context for pseudo-elements */
+}
+
+/* Bounce Animation */
+@keyframes bounce {
+    0% { transform: translateY(0); }
+    20% { transform: translateY(-10px); }
+    50% { transform: translateY(0); }
+    70% { transform: translateY(-5px); }
+    100% { transform: translateY(0); }
+}
+
+.category-menu li img {
+    width: 40px;
+    height: 40px;
+    transition: transform 0.3s ease-in-out; /* Smooth transition for hover effect */
+}
+
+.category-menu li span {
+    margin-top: 5px;
+    font-size: 0.9em;
+}
+
+.category-menu li.active {
+    border-bottom: 2px solid #333;
+}
+
+.category-menu li:hover img {
+    animation: bounce 0.6s ease-in-out;
+}
+
+/* Dropdown and Address Input styles */
 .location-dropdown {
     position: relative;
     display: flex;
@@ -115,7 +182,7 @@
 }
 
 .address-input {
-    width: calc(100% - 70px);
+    width: calc(100% - 70px); /* Adjust width to fit with add address button */
     padding: 5px;
     border-radius: 5px;
     border: 1px solid #ccc;
@@ -136,90 +203,7 @@
     background: #0056b3;
 }
 
-/* Ensure navbar items are spaced properly */
-.navbar-menu,
-.navbar-search-container {
-    margin-left: auto; /* Align these to the right */
-}
-
-/* Category navbar */
-.category-navbar {
-    margin: 20px 0;
-    border-bottom: 2px solid #ddd;
-}
-
-.category-menu {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-    padding: 0;
-    margin: 0;
-}
-
-.category-menu li {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-    position: relative; /* Ensure positioning context for pseudo-elements */
-}
-
-/* Bounce Animation */
-@keyframes bounce {
-    0% { transform: translateY(0); }
-    20% { transform: translateY(-10px); }
-    50% { transform: translateY(0); }
-    70% { transform: translateY(-5px); }
-    100% { transform: translateY(0); }
-}
-
-.category-menu li img {
-    width: 40px;
-    height: 40px;
-    transition: transform 0.3s ease-in-out; /* Smooth transition for hover effect */
-}
-
-.category-menu li span {
-    margin-top: 5px;
-    font-size: 0.9em;
-}
-
-.category-menu li.active {
-    border-bottom: 2px solid #333;
-}
-
-.category-menu li:hover img {
-    animation: bounce 0.6s ease-in-out;
-}
-
-.search-container {
-    display: flex;
-    gap: 10px;
-    margin: 20px 0;
-}
-
-.search-bar {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.location-bar {
-    width: 200px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.dashboard-welcome {
-    font-size: 2em;
-}
-
-.dashboard-error {
-    color: red;
-}
-
+/* Ensure order list styling */
 .order-list {
     list-style: none;
     padding: 0;

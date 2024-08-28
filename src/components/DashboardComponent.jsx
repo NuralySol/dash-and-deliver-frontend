@@ -109,6 +109,7 @@ const DashboardComponent = () => {
     return (
         <div className="dashboard-container">
             <nav className="navbar">
+                <img src="1-removebg-preview.png" alt="Logo" className="navbar-logo" /> {/* Logo Image */}
                 <div className="navbar-search-container">
                     <input
                         type="text"
@@ -117,13 +118,26 @@ const DashboardComponent = () => {
                         onChange={handleSearchChange}
                         className="search-bar"
                     />
+                    <div className="address-input-container">
+                        <input
+                            type="text"
+                            placeholder="Enter address..."
+                            value={inputAddress}
+                            onChange={handleInputChange}
+                            className="address-input"
+                        />
+                        <button onClick={handleAddAddress} className="add-address-button">
+                            Add
+                        </button>
+                        <img src="add-to-cart.png" alt="Cart Icon" className="cart-icon" /> {/* Cart Icon */}
+                    </div>
                     <div className="location-dropdown">
                         <button
                             aria-haspopup="true"
                             onClick={toggleDropdown}
                             className="location-button"
                         >
-                            <span className="location-text">{location || 'Select or enter address...'}</span>
+                            <span className="location-text">{location || 'Enter address...'}</span>
                             <span className="dropdown-icon">
                                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M8 11l4-4H4l4 4z" fill="currentColor"></path>
@@ -209,27 +223,23 @@ const DashboardComponent = () => {
                         <img src="seafood.png" alt="Seafood" />
                         <span>Seafood</span>
                     </li>
-                    <li onClick={() => handleCategoryChange('Coffee')} className={selectedCategory === 'Coffee' ? 'active' : ''}>
-                        <img src="coffee-cup.png" alt="Coffee" />
-                        <span>Coffee</span>
-                    </li>
-                    <li onClick={() => handleCategoryChange('Sushi')} className={selectedCategory === 'Sushi' ? 'active' : ''}>
-                        <img src="sushi.png" alt="Sushi" />
-                        <span>Sushi</span>
-                    </li>
-                    <li onClick={() => handleCategoryChange('Sandwiches')} className={selectedCategory === 'Sandwiches' ? 'active' : ''}>
-                        <img src="sandwich.png" alt="Sandwiches" />
-                        <span>Sandwiches</span>
+                    <li onClick={() => handleCategoryChange('All')} className={selectedCategory === 'All' ? 'active' : ''}>
+                        <img src="all.png" alt="All" />
+                        <span>All</span>
                     </li>
                 </ul>
             </nav>
 
-            {error && <p className="dashboard-error">{error}</p>}
-            <ul className="order-list">
-                {filteredOrders.map(order => (
-                    <li key={order.id} className="order-item">{order.description}</li>
+            <div className="order-list">
+                {filteredOrders.map((order, index) => (
+                    <div key={index} className="order-item">
+                        <h4>{order.title}</h4>
+                        <p>{order.description}</p>
+                        <span>{order.location}</span>
+                        <span>{order.category}</span>
+                    </div>
                 ))}
-            </ul>
+            </div>
         </div>
     );
 };
