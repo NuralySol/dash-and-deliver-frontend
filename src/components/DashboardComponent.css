@@ -1,17 +1,85 @@
+.dashboard-wrapper {
+    display: flex;
+    min-height: 100vh; 
+    width: 100%;
+}
+
+.sidebar {
+    width: 200px;
+    background-color: #ffffff;
+    height: 100vh; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-nav {
+    list-style-type: none;
+    padding: 0;
+    flex-grow: 1; 
+}
+
+.sidebar-nav li {
+    margin-bottom: 10px;
+}
+
+.sidebar-nav a {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    display: block;
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.sidebar-nav a:hover {
+    background-color: rgba(113, 110, 110, 0.163);
+    color: rgb(8, 183, 151);
+}
+
+.sidebar-footer {
+    text-align: center;
+    margin-top: auto; 
+    width: 100%;
+    background-color: rgb(8, 183, 151);
+    padding: 20px 0;
+}
+
+.sidebar-footer a {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 500;
+    display: block;
+    padding: 10px 15px;
+    transition: color 0.3s;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.sidebar-footer a:hover {
+    cursor: pointer;
+}
+
 .dashboard-container {
-    max-width: 12000px;
-    margin: 20px auto;
-    padding: 0 15px;
-    background-color: darkolivegreen;
-    color: rgb(255, 255, 255);
+    margin-left: 200px;
+    width: 1200px;
+    padding: 20px;
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
     font-family: 'Times New Roman', Times, serif;
 }
 
 .dashboard-welcome {
     font-size: 24px;
     font-weight: bold;
-    color: rgb(255, 255, 255);
-    margin-bottom: 20px;
+    color: rgb(0, 0, 0);
 }
 
 .order-list {
@@ -31,3 +99,4 @@
 .order-item:hover {
     transform: translateY(-5px);
 }
+
