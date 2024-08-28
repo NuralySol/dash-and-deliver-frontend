@@ -9,8 +9,11 @@ const DashboardComponent = () => {
     const [username, setUsername] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
     const [location, setLocation] = useState('');
+    const [inputAddress, setInputAddress] = useState('');
     const [filteredOrders, setFilteredOrders] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('All');
+    const [dropdownVisible, setDropdownVisible] = useState(false);
+    const [savedAddresses, setSavedAddresses] = useState([]);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -59,16 +62,38 @@ const DashboardComponent = () => {
     };
 
     // Handle address input change
-    const handleLocationChange = (event) => {
-        const loc = event.target.value;
+    const handleInputChange = (event) => {
+        setInputAddress(event.target.value);
+    };
+
+    // Handle address selection from dropdown
+    const handleLocationChange = (loc) => {
         setLocation(loc);
+        setInputAddress('');
+        setDropdownVisible(false);
         filterOrders(searchTerm, loc, selectedCategory);
+    };
+
+    // Handle adding a new address
+    const handleAddAddress = () => {
+        if (inputAddress.trim() && !savedAddresses.includes(inputAddress.trim())) {
+            setSavedAddresses([...savedAddresses, inputAddress.trim()]);
+            setLocation(inputAddress.trim());
+            setInputAddress('');
+            setDropdownVisible(false);
+            filterOrders(searchTerm, inputAddress.trim(), selectedCategory);
+        }
     };
 
     // Handle category selection
     const handleCategoryChange = (category) => {
         setSelectedCategory(category);
         filterOrders(searchTerm, location, category);
+    };
+
+    // Toggle dropdown visibility
+    const toggleDropdown = () => {
+        setDropdownVisible(!dropdownVisible);
     };
 
     // Filter orders based on search term, location, and category
@@ -93,14 +118,43 @@ const DashboardComponent = () => {
                         className="search-bar"
                     />
                     <div className="location-dropdown">
-                        <img src="location.png" alt="Location" className="location-icon" />
-                        <input
-                            type="text"
-                            placeholder="Enter address..."
-                            value={location}
-                            onChange={handleLocationChange}
-                            className="location-address"
-                        />
+                        <button
+                            aria-haspopup="true"
+                            onClick={toggleDropdown}
+                            className="location-button"
+                        >
+                            <span className="location-text">{location || 'Select or enter address...'}</span>
+                            <span className="dropdown-icon">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M8 11l4-4H4l4 4z" fill="currentColor"></path>
+                                </svg>
+                            </span>
+                        </button>
+                        {dropdownVisible && (
+                            <div className="dropdown-menu">
+                                <div className="dropdown-item">
+                                    <input
+                                        type="text"
+                                        placeholder="Enter new address..."
+                                        value={inputAddress}
+                                        onChange={handleInputChange}
+                                        className="address-input"
+                                    />
+                                    <button onClick={handleAddAddress} className="add-address-button">
+                                        Add
+                                    </button>
+                                </div>
+                                {savedAddresses.map((addr, index) => (
+                                    <div
+                                        key={index}
+                                        className="dropdown-item"
+                                        onClick={() => handleLocationChange(addr)}
+                                    >
+                                        {addr}
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </div>
             </nav>
@@ -181,4 +235,3 @@ const DashboardComponent = () => {
 };
 
 export default DashboardComponent;
-
