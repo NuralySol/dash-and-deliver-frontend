@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
+import { Link } from 'react-router-dom'; 
 import { fetchDataController } from '../controllers/homeController.js'; 
 import './HomeComponent.css';  
 
