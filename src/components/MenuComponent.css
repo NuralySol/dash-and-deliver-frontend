@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Courgette&display=swap');
+
 .menu-overlay {
     position: fixed;
     top: 0;
@@ -16,6 +18,11 @@
     border-radius: 8px;
     max-width: 500px;
     width: 100%;
+  }
+
+  .menu-content h3 {
+    font-family: 'Courgette', sans-serif;
+    font-size: 30px;
   }
   
   .menu-close-button {

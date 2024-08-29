@@ -8,11 +8,11 @@ import {
   faHome,
   faQuestionCircle,
   faPeopleGroup,
+  faCartPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import CardComponent from "./CardComponent.jsx";
 import MenuComponent from "./MenuComponent.jsx";
 import "./DashboardComponent.css";
-
 
 const DashboardComponent = () => {
   const [orders, setOrders] = useState([]);
@@ -74,13 +74,12 @@ const DashboardComponent = () => {
   }, []);
 
   const filterMenuItemsByRestaurant = (restaurantId, menuItems) => {
-    return menuItems.filter(item => item.restaurant === restaurantId);
+    return menuItems.filter((item) => item.restaurant === restaurantId);
   };
 
   const handleRestaurantClick = async (restaurantId) => {
+    console.log(restaurantId);
 
-    console.log(restaurantId)
-    
     try {
       const data = await getMenuItems(); // Fetch all menu items
       const filteredItems = filterMenuItemsByRestaurant(restaurantId, data); // Filter items by restaurantId
@@ -98,9 +97,9 @@ const DashboardComponent = () => {
 
   const handleLogout = () => {
     // Clear the user session/token
-    localStorage.removeItem('token');
+    localStorage.removeItem("token");
     // Redirect to the landing page after logout
-    navigate('/');
+    navigate("/");
   };
 
   const slideSidebar = () => {
@@ -112,7 +111,7 @@ const DashboardComponent = () => {
       <button onClick={slideSidebar} className="sidebar-button">
         {isSidebarActive ? "Hide Sidebar" : "Show Sidebar"}
       </button>
-      <aside className={`sidebar ${isSidebarActive ? 'active' : ''}`}>
+      <aside className={`sidebar ${isSidebarActive ? "active" : ""}`}>
         <ul className="sidebar-nav">
           <li>
             <a href="#home">
@@ -121,7 +120,8 @@ const DashboardComponent = () => {
           </li>
           <li>
             <a href="#about">
-              <FontAwesomeIcon icon={faPeopleGroup} className="sidebar-icon" /> About Us
+              <FontAwesomeIcon icon={faPeopleGroup} className="sidebar-icon" />{" "}
+              About Us
             </a>
           </li>
         </ul>
@@ -129,12 +129,18 @@ const DashboardComponent = () => {
           <ul>
             <button onClick={handleLogout}>Log Out</button>
             <a href="#help">
-              <FontAwesomeIcon icon={faQuestionCircle} className="sidebar-icon" /> Help & Support
+              <FontAwesomeIcon
+                icon={faQuestionCircle}
+                className="sidebar-icon"
+              />{" "}
+              Help & Support
             </a>
           </ul>
         </div>
       </aside>
-      <div className={`dashboard-container ${isSidebarActive ? 'shifted' : ''}`}>
+      <div
+        className={`dashboard-container ${isSidebarActive ? "shifted" : ""}`}
+      >
         <h2 className="dashboard-welcome">Welcome, {username}!</h2>
         {error && <p className="dashboard-error">{error}</p>}
         <CardComponent
@@ -148,6 +154,10 @@ const DashboardComponent = () => {
               {menuItems.map((item) => (
                 <li key={item._id}>
                   {item.item_name} - ${item.price}
+                  <FontAwesomeIcon
+                    icon={faCartPlus}
+                    className="add-to-cart-icon"
+                  />
                 </li>
               ))}
             </ul>
