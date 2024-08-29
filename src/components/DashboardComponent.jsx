@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import {jwtDecode} from "jwt-decode"; // Corrected import statement
+import { jwtDecode } from "jwt-decode"; // Corrected import statement
 import { fetchData } from "../services/loginFetch";
 import { getMenuItems } from "../services/menuAndOrderFetch.js";
 import { useNavigate } from "react-router-dom";
