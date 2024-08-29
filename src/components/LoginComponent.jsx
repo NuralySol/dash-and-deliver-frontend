@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { loginUser } from '../services/loginFetch.js';
 import { useNavigate } from 'react-router-dom'; 
+import './LoginComponent.css';
+import { Helmet } from 'react-helmet'; // Import Helmet if using dynamic font links
 
 const LoginComponent = () => {
     const [username, setUsername] = useState('');
@@ -29,7 +31,12 @@ const LoginComponent = () => {
     };
 
     return (
-        <div>
+        <div className='login-page'>
+            <Helmet>
+                <link rel="preconnect" href="https://fonts.googleapis.com" />
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+                <link href="https://fonts.googleapis.com/css2?family=Bungee+Tint&display=swap" rel="stylesheet" />
+            </Helmet>
             <NavBar /> {/* Navigation bar */}
             <div className="login-container">
                 <h2>Login</h2>
@@ -52,12 +59,17 @@ const LoginComponent = () => {
                             required
                         />
                     </div>
-                    <button type="submit" disabled={isLoading}>
+                    <button id='sumbit-button'type="submit" disabled={isLoading}>
                         {isLoading ? 'Logging in...' : 'Login'}
                     </button>
                     {error && <p className="error">{error}</p>}
                 </form>
             </div>
+            {/* Loading overlay */}
+            <div className={`overlay ${isLoading ? 'active' : ''}`}>
+                <div className="spinner"></div>
+            </div>
+            <img src="1-removebg-preview.png" id="logo" alt="Logo" />
         </div>
     );
 };

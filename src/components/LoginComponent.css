@@ -10,8 +10,8 @@ body {
     justify-content: center; /* Center items vertically */
 }
 
-/* Styling for the register page background */
-.register-page {
+/* Styling for the login page background */
+.login-page {
     background-image: url("https://revx.io/storage/2021/08/fast-delivery-scooter-rides-out-smartphone-delivery-concept-online-ordering-food-delivery-last-mile-template-banner-3d-illustration-3d-render-scaled.jpg");
     background-size: cover; /* Make sure the image covers the entire background */
     background-position: center; /* Center the background image */
@@ -21,12 +21,12 @@ body {
     display: flex;
     justify-content: flex-end; /* Align items to the right side */
     position: relative; /* Allows positioning of child elements relative to this container */
-    padding-right: 20px; /* Add padding to ensure the container is not flush against the edge */
+    padding-right: 20px; /* Optional: Add padding to ensure the container is not flush against the edge */
 }
 
 /* Styling for the navigation bar */
 .navbar {
-    position: absolute; /* Position relative to .register-page */
+    position: absolute; /* Position relative to .login-page */
     top: 0;
     left: 0;
     width: 100%;
@@ -56,11 +56,11 @@ body {
 }
 
 .navbar a:hover {
-    color: #007bff; /* Change color on hover */
+    color: #75d9c7; /* Change color on hover */
 }
 
-/* Styling for the register container */
-.register-container {
+/* Styling for the login container */
+.login-container {
     font-family: 'Bungee Tint', cursive; /* Apply custom font */
     display: flex;
     flex-direction: column;
@@ -79,13 +79,13 @@ body {
     position: relative; /* Ensure positioning is relative to its parent */
 }
 
-/* Add hover effect for the register container */
-.register-container:hover {
+/* Add hover effect for the login container */
+.login-container:hover {
     box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2); /* More pronounced shadow on hover */
 }
 
-/* Header styling within the register container */
-.register-container h2 {
+/* Header styling within the login container */
+.login-container h2 {
     margin: 0 0 20px;
     font-size: 45px; /* Larger font size for the header */
     color: #333333; /* Darker text color for readability */
@@ -138,7 +138,7 @@ button {
 }
 
 button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #50b4a3; /* Darker blue on hover */
     transform: translateY(-2px); /* Subtle lift effect on hover */
 }
 
@@ -157,7 +157,7 @@ button:disabled {
 
 /* Styling for the logo */
 #logo {
-    position: absolute; /* Position relative to .register-page */
+    position: absolute; /* Position relative to .login-page */
     bottom: 20px; /* Distance from the bottom of the page */
     right: 20px; /* Distance from the right edge of the page */
     width: 150px; /* Adjust width as needed */
@@ -167,3 +167,4 @@ button:disabled {
 #submit-button {
     background-color: aquamarine;
 }
+

@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { RegisterController } from '../controllers/registerController.js';
 import { useNavigate } from 'react-router-dom'; 
+import { Helmet } from 'react-helmet'; // Import Helmet if using dynamic font links
 import './RegisterComponent.css';
+
 
 const RegisterComponent = () => {
     const [username, setUsername] = useState('');
@@ -15,12 +17,17 @@ const RegisterComponent = () => {
         const registeredUser = await handleRegister(userData);
 
         if (registeredUser) {
-            navigate('/login'); // Redirect to dashboard after successful registration
+            navigate('/login'); // Redirect to login after successful registration
         }
     };
 
     return (
-        <div>
+        <div className="register-page">
+            <Helmet>
+                <link rel="preconnect" href="https://fonts.googleapis.com" />
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+                <link href="https://fonts.googleapis.com/css2?family=Bungee+Tint&display=swap" rel="stylesheet" />
+            </Helmet>
             <NavBar /> {/* Navigation bar */}
             <div className="register-container">
                 <h2>Register</h2>
@@ -49,6 +56,7 @@ const RegisterComponent = () => {
                     {error && <p className="error">{error}</p>}
                 </form>
             </div>
+            <img src="1-removebg-preview.png" id="logo" alt="Logo" />
         </div>
     );
 };
@@ -59,10 +67,11 @@ const NavBar = () => {
             <ul>
                 <li><a href="/">Home</a></li>
                 <li><a href="/register">Register</a></li>
-                <li><a href="/login">Login</a></li> {/* Add login link */}
+                <li><a href="/login">Login</a></li>
             </ul>
         </nav>
     );
 };
 
 export default RegisterComponent;
+

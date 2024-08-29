@@ -109,7 +109,9 @@ const DashboardComponent = () => {
     return (
         <div className="dashboard-container">
             <nav className="navbar">
-                <img src="1-removebg-preview.png" alt="Logo" className="navbar-logo" /> {/* Logo Image */}
+            <a href="/dashboard">
+                <img src="1-removebg-preview.png" alt="Logo" className="navbar-logo" />
+            </a>
                 <div className="navbar-search-container">
                     <input
                         type="text"
@@ -118,7 +120,8 @@ const DashboardComponent = () => {
                         onChange={handleSearchChange}
                         className="search-bar"
                     />
-                    <div className="address-input-container">
+                    
+                    {/* <div className="address-input-container">
                         <input
                             type="text"
                             placeholder="Enter address..."
@@ -129,8 +132,9 @@ const DashboardComponent = () => {
                         <button onClick={handleAddAddress} className="add-address-button">
                             Add
                         </button>
-                        <img src="add-to-cart.png" alt="Cart Icon" className="cart-icon" /> {/* Cart Icon */}
-                    </div>
+                        <img src="add-to-cart.png" alt="Cart Icon" className="cart-icon" />
+                    </div> */}
+
                     <div className="location-dropdown">
                         <button
                             aria-haspopup="true"
@@ -170,6 +174,7 @@ const DashboardComponent = () => {
                             </div>
                         )}
                     </div>
+                    <img src="cart.png" alt="Cart Icon" className="cart-icon" />
                 </div>
             </nav>
 
