@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode} from "jwt-decode"; // Corrected import statement
 import { fetchData } from "../services/loginFetch";
 import { getMenuItems } from "../services/menuAndOrderFetch.js";
 import { useNavigate } from "react-router-dom";
@@ -9,8 +9,10 @@ import {
   faQuestionCircle,
   faPeopleGroup,
 } from "@fortawesome/free-solid-svg-icons";
+
 import CardComponent from "./CardComponent.jsx";
 import "./DashboardComponent.css";
+import CheckoutComponent from '../components/CheckoutComponent.jsx';
 
 const DashboardComponent = () => {
   const [orders, setOrders] = useState([]);
@@ -19,34 +21,33 @@ const DashboardComponent = () => {
   const [error, setError] = useState(null);
   const [username, setUsername] = useState("");
   const [isSidebarActive, setIsSidebarActive] = useState(false);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const [showCheckout, setShowCheckout] = useState(false);
+  const navigate = useNavigate(); 
 
   useEffect(() => {
-    const token = localStorage.getItem("token"); // Use "token" key
+    const token = localStorage.getItem("token");
 
     if (token) {
       try {
-        // Decode the token and set the username
+        // Use jwt_decode instead of jwtDecode
         const decodedToken = jwtDecode(token);
         setUsername(decodedToken.username || "User");
-        console.log("Token:", token); // Debugging log
-        console.log("Decoded Token:", decodedToken); // Debugging log
       } catch (err) {
         console.error("Token decoding error:", err.message);
         setError("Failed to decode token.");
-        return; // Exit if token decoding fails
+        return;
       }
     } else {
       setError("No token found. Please log in.");
-      return; // Exit if no token is found
+      return;
     }
 
-    const loadOrders = async () => {
+    const loadOrders = async () => {  
       try {
         const data = await fetchData("/orders", {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`, // Attach token in header
+            Authorization: `Bearer ${token}`, 
           },
         });
         setOrders(data);
@@ -58,7 +59,7 @@ const DashboardComponent = () => {
 
     const loadRestaurants = async () => {
       try {
-        const data = await fetchData("/restaurants"); // Fetch restaurants data
+        const data = await fetchData("/restaurants"); 
         setRestaurants(data);
       } catch (err) {
         console.error("Error loading restaurants:", err.message);
@@ -66,13 +67,13 @@ const DashboardComponent = () => {
       }
     };
 
-    loadOrders(); // Fetch orders
-    loadRestaurants(); // Fetch restaurants
+    loadOrders(); 
+    loadRestaurants(); 
   }, []);
 
   const handleRestaurantClick = async (restaurantId) => {
     try {
-      const data = await getMenuItems(restaurantId); // Fetch menu items for the clicked restaurant
+      const data = await getMenuItems(restaurantId); 
       setMenuItems(data);
     } catch (err) {
       console.error("Error loading menu items:", err.message);
@@ -81,14 +82,16 @@ const DashboardComponent = () => {
   };
 
   const handleLogout = () => {
-    // Clear the user session/token
     localStorage.removeItem('token');
-    // Redirect to the landing page after logout
-    navigate('/'); // Replace '/' with your landing page route if different
+    navigate('/'); 
   };
 
   const slideSidebar = () => {
     setIsSidebarActive(!isSidebarActive);
+  };
+
+  const handleCheckoutClick = () => { 
+    setShowCheckout(true);
   };
 
   return (
@@ -123,7 +126,7 @@ const DashboardComponent = () => {
         {error && <p className="dashboard-error">{error}</p>}
         <CardComponent
           restaurants={restaurants}
-          onRestaurantClick={handleRestaurantClick} // Pass the click handler
+          onRestaurantClick={handleRestaurantClick} 
         />
         {menuItems.length > 0 && (
           <div className="menu-items">
@@ -144,6 +147,17 @@ const DashboardComponent = () => {
             </li>
           ))}
         </ul>
+        
+        <button onClick={handleCheckoutClick}>
+          Proceed to Payment
+        </button>
+
+        {showCheckout && (
+          <div>
+            <h2>Payment Section</h2>
+            <CheckoutComponent />
+          </div>
+        )}
       </div>
     </div>
   );
