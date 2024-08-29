@@ -15,13 +15,13 @@ const RegisterComponent = () => {
         const registeredUser = await handleRegister(userData);
 
         if (registeredUser) {
-            navigate('/login'); // Redirect to dashboard after successful registration
+            navigate('/login'); // Redirect to dashboard 
         }
     };
 
     return (
         <div>
-            <NavBar /> {/* Navigation bar */}
+            <NavBar /> 
             <div className="register-container">
                 <h2>Register</h2>
                 <form onSubmit={handleSubmit}>

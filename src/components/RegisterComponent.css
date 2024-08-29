@@ -1,4 +1,7 @@
-/* Container styling */
+input {
+    justify-content: center;
+}
+
 .register-container {
     width: 100%;
     max-width: 400px;
@@ -73,10 +76,15 @@ button[type="submit"]:disabled {
 
 /* Navbar styling */
 .navbar {
+    width: 100%;
     background-color: #333333;
     padding: 10px 20px;
     text-align: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    position: fixed; /* Fixes the navbar to the top of the page */
+    top: 0; /* Ensures it's at the top */
+    left: 0; /* Ensures it's aligned to the left edge */
+    z-index: 1000; /* Keeps the navbar on top of other content */
 }
 
 /* Navbar links styling */
@@ -85,7 +93,7 @@ button[type="submit"]:disabled {
     margin: 0;
     padding: 0;
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
 }
 
 .navbar ul li {
