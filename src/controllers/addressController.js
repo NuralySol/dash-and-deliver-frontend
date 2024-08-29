@@ -1,52 +1,36 @@
-
 import * as apiFetch from '../services/addressFetch.js';
 
-export const fetchAllAddressesController = async (setData, setError) => {
+export const fetchAllAddressesController = async (setData) => {
     try {
         const data = await apiFetch.getAllAddresses();
         setData(data);
-    } catch (error) {
-        console.error('Error fetching addresses:', error);
-        setError(error.message);
-    }
+    } catch (error) {}
 };
 
-export const fetchAddressByIdController = async (id, setData, setError) => {
+export const fetchAddressByIdController = async (id, setData) => {
     try {
         const data = await apiFetch.getAddressById(id);
         setData(data);
-    } catch (error) {
-        console.error('Error fetching address by ID:', error);
-        setError(error.message);
-    }
+    } catch (error) {}
 };
 
-export const createAddressController = async (address, setData, setError) => {
+export const createAddressController = async (address, setData) => {
     try {
         const data = await apiFetch.createAddress(address);
         setData(data);
-    } catch (error) {
-        console.error('Error creating address:', error);
-        setError(error.message);
-    }
+    } catch (error) {}
 };
 
-export const updateAddressController = async (id, address, setData, setError) => {
+export const updateAddressController = async (id, address, setData) => {
     try {
         const data = await apiFetch.updateAddress(id, address);
         setData(data);
-    } catch (error) {
-        console.error('Error updating address:', error);
-        setError(error.message);
-    }
+    } catch (error) {}
 };
 
-export const deleteAddressController = async (id, setData, setError) => {
+export const deleteAddressController = async (id, setData) => {
     try {
         await apiFetch.deleteAddress(id);
         setData(null);
-    } catch (error) {
-        console.error('Error deleting address:', error);
-        setError(error.message);
-    }
+    } catch (error) {}
 };
