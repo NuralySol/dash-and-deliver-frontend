@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Courgette&family=Tangerine:wght@400;700&display=swap');
 
 .dashboard-wrapper {
     display: flex;
@@ -129,10 +130,12 @@
 }
 
 .dashboard-welcome {
-    font-size: 24px;
+    font-family: Tangerine, sans-serif;
+    font-size: 48px;
     font-weight: bold;
     color: rgb(0, 0, 0);
     text-align: right;
+    margin-bottom: 0;
 }
 
 .order-list {
