@@ -11,6 +11,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import CardComponent from "./CardComponent.jsx";
 import "./DashboardComponent.css";
+import {
+  createAddressController,
+  deleteAddressController, // Import deleteAddressController
+} from "../controllers/addressController";
 
 const DashboardComponent = () => {
   const [orders, setOrders] = useState([]);
@@ -19,26 +23,25 @@ const DashboardComponent = () => {
   const [error, setError] = useState(null);
   const [username, setUsername] = useState("");
   const [isSidebarActive, setIsSidebarActive] = useState(false);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState(""); // State for city input
+  const [displayedAddress, setDisplayedAddress] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token"); // Use "token" key
+    const token = localStorage.getItem("token");
 
     if (token) {
       try {
-        // Decode the token and set the username
         const decodedToken = jwtDecode(token);
         setUsername(decodedToken.username || "User");
-        console.log("Token:", token); // Debugging log
-        console.log("Decoded Token:", decodedToken); // Debugging log
       } catch (err) {
-        console.error("Token decoding error:", err.message);
         setError("Failed to decode token.");
-        return; // Exit if token decoding fails
+        return;
       }
     } else {
       setError("No token found. Please log in.");
-      return; // Exit if no token is found
+      return;
     }
 
     const loadOrders = async () => {
@@ -46,49 +49,71 @@ const DashboardComponent = () => {
         const data = await fetchData("/orders", {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`, // Attach token in header
+            Authorization: `Bearer ${token}`,
           },
         });
         setOrders(data);
       } catch (err) {
-        console.error("Error loading orders:", err.message);
         setError(err.message);
       }
     };
 
     const loadRestaurants = async () => {
       try {
-        const data = await fetchData("/restaurants"); // Fetch restaurants data
+        const data = await fetchData("/restaurants");
         setRestaurants(data);
       } catch (err) {
-        console.error("Error loading restaurants:", err.message);
         setError(err.message);
       }
     };
 
-    loadOrders(); // Fetch orders
-    loadRestaurants(); // Fetch restaurants
+    loadOrders();
+    loadRestaurants();
   }, []);
 
   const handleRestaurantClick = async (restaurantId) => {
     try {
-      const data = await getMenuItems(restaurantId); // Fetch menu items for the clicked restaurant
+      const data = await getMenuItems(restaurantId);
       setMenuItems(data);
     } catch (err) {
-      console.error("Error loading menu items:", err.message);
       setError(err.message);
     }
   };
 
   const handleLogout = () => {
-    // Clear the user session/token
-    localStorage.removeItem('token');
-    // Redirect to the landing page after logout
-    navigate('/'); // Replace '/' with your landing page route if different
+    localStorage.removeItem("token");
+    navigate("/");
   };
 
   const slideSidebar = () => {
     setIsSidebarActive(!isSidebarActive);
+  };
+
+  const handleAddressSubmit = async () => {
+    try {
+      const createdAddress = await createAddressController(
+        { address_line: address, city }, // Pass both address_line and city
+        setDisplayedAddress,
+        
+      );
+
+      if (createdAddress && createdAddress._id) {
+        setDisplayedAddress(createdAddress);
+      } else {
+        setError();
+      }
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
+  const handleAddressDelete = async (id) => {
+    try {
+      await deleteAddressController(id, setDisplayedAddress, setError);
+      setDisplayedAddress(null); // Clear the displayed address after deletion
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   return (
@@ -96,7 +121,7 @@ const DashboardComponent = () => {
       <button onClick={slideSidebar} className="sidebar-button">
         {isSidebarActive ? "Hide Sidebar" : "Show Sidebar"}
       </button>
-      <aside className={`sidebar ${isSidebarActive ? 'active' : ''}`}>
+      <aside className={`sidebar ${isSidebarActive ? "active" : ""}`}>
         <ul className="sidebar-nav">
           <li>
             <a href="#home">
@@ -118,12 +143,12 @@ const DashboardComponent = () => {
           </ul>
         </div>
       </aside>
-      <div className={`dashboard-container ${isSidebarActive ? 'shifted' : ''}`}>
+      <div className={`dashboard-container ${isSidebarActive ? "shifted" : ""}`}>
         <h2 className="dashboard-welcome">Welcome, {username}!</h2>
         {error && <p className="dashboard-error">{error}</p>}
         <CardComponent
           restaurants={restaurants}
-          onRestaurantClick={handleRestaurantClick} // Pass the click handler
+          onRestaurantClick={handleRestaurantClick}
         />
         {menuItems.length > 0 && (
           <div className="menu-items">
@@ -144,6 +169,29 @@ const DashboardComponent = () => {
             </li>
           ))}
         </ul>
+        <div className="address-section">
+          <input
+            type="text"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            placeholder="Enter your address"
+          />
+          <input
+            type="text"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            placeholder="Enter your city (optional)"
+          />
+          <button onClick={handleAddressSubmit}>Submit Address</button>
+        </div>
+        {displayedAddress && (
+          <div className="address-display">
+            <h3>Your Address:</h3>
+            <p>{displayedAddress.address_line}</p>
+            {displayedAddress.city && <p>City: {displayedAddress.city}</p>}
+            <button onClick={() => handleAddressDelete(displayedAddress._id)}>Delete Address</button>
+          </div>
+        )}
       </div>
     </div>
   );
