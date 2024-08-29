@@ -1,12 +1,11 @@
 const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}`;
 
 export const getMenuItems = async (restaurantId) => {
-    const url = `${BASE_URL}/menu-items?restaurantId=${restaurantId}`;
-    const response = await fetch(url);
-    if (!response.ok) {
-        throw new Error('Failed to fetch menu items');
-    }
-    return response.json();
+    const response = await fetch(`${BASE_URL}/menu-items/${restaurantId}`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch menu items');
+  }
+  return response.json();
 };
 
 export const createMenuItem = async (menuItemData) => {

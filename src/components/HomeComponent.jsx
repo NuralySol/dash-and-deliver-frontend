@@ -25,12 +25,12 @@ const HomeComponent = () => {
             ) : (
                 <p className="loading-home">Loading...</p>
             )}
-            {/* Link to RegisterComponent */}
+         
             <p className="register-link">
-                Don't have an account? <Link to="/register">Register here</Link>
+                Don't have an account? <Link to="/register">Register Here</Link>
             </p>
             <p className="login-link">
-                Have an account already <Link to="/login">Login here</Link>
+                Have an account already <Link to="/login">Login Here</Link>
             </p>
         </div>
     );
