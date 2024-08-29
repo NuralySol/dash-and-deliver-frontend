@@ -10,7 +10,9 @@ import {
   faPeopleGroup,
 } from "@fortawesome/free-solid-svg-icons";
 import CardComponent from "./CardComponent.jsx";
+import MenuComponent from "./MenuComponent.jsx";
 import "./DashboardComponent.css";
+
 
 const DashboardComponent = () => {
   const [orders, setOrders] = useState([]);
@@ -19,6 +21,7 @@ const DashboardComponent = () => {
   const [error, setError] = useState(null);
   const [username, setUsername] = useState("");
   const [isSidebarActive, setIsSidebarActive] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
@@ -70,21 +73,34 @@ const DashboardComponent = () => {
     loadRestaurants(); // Fetch restaurants
   }, []);
 
+  const filterMenuItemsByRestaurant = (restaurantId, menuItems) => {
+    return menuItems.filter(item => item.restaurant === restaurantId);
+  };
+
   const handleRestaurantClick = async (restaurantId) => {
+
+    console.log(restaurantId)
+    
     try {
-      const data = await getMenuItems(restaurantId); // Fetch menu items for the clicked restaurant
-      setMenuItems(data);
+      const data = await getMenuItems(); // Fetch all menu items
+      const filteredItems = filterMenuItemsByRestaurant(restaurantId, data); // Filter items by restaurantId
+      setMenuItems(filteredItems); // Set the filtered items
+      setIsMenuOpen(true);
     } catch (err) {
       console.error("Error loading menu items:", err.message);
       setError(err.message);
     }
   };
 
+  const handleCloseMenu = () => {
+    setIsMenuOpen(false);
+  };
+
   const handleLogout = () => {
     // Clear the user session/token
     localStorage.removeItem('token');
     // Redirect to the landing page after logout
-    navigate('/'); // Replace '/' with your landing page route if different
+    navigate('/');
   };
 
   const slideSidebar = () => {
@@ -123,11 +139,11 @@ const DashboardComponent = () => {
         {error && <p className="dashboard-error">{error}</p>}
         <CardComponent
           restaurants={restaurants}
-          onRestaurantClick={handleRestaurantClick} // Pass the click handler
+          onRestaurantClick={handleRestaurantClick}
         />
-        {menuItems.length > 0 && (
-          <div className="menu-items">
-            <h3>Menu</h3>
+        <MenuComponent isOpen={isMenuOpen} onClose={handleCloseMenu}>
+          <h3>Menu</h3>
+          {menuItems.length > 0 ? (
             <ul>
               {menuItems.map((item) => (
                 <li key={item._id}>
@@ -135,8 +151,10 @@ const DashboardComponent = () => {
                 </li>
               ))}
             </ul>
-          </div>
-        )}
+          ) : (
+            <p>No menu items available.</p>
+          )}
+        </MenuComponent>
         <ul className="order-list">
           {orders.map((order) => (
             <li key={order.id} className="order-item">
