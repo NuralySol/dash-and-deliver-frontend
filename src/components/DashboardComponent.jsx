@@ -1,18 +1,13 @@
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { fetchData } from "../services/loginFetch";
+import { getMenuItems } from "../services/menuAndOrderFetch.js";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHome,
-  faShoppingBasket,
-  faShoppingBag,
-  faStore,
-  faWineBottle,
-  faTags,
-  faPaw,
-  faHeart,
-  faSearch,
   faQuestionCircle,
+  faPeopleGroup,
 } from "@fortawesome/free-solid-svg-icons";
 import CardComponent from "./CardComponent.jsx";
 import "./DashboardComponent.css";
@@ -20,11 +15,14 @@ import "./DashboardComponent.css";
 const DashboardComponent = () => {
   const [orders, setOrders] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
+  const [menuItems, setMenuItems] = useState([]);
   const [error, setError] = useState(null);
   const [username, setUsername] = useState("");
+  const [isSidebarActive, setIsSidebarActive] = useState(false);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token"); // Use "token" key
 
     if (token) {
       try {
@@ -59,22 +57,46 @@ const DashboardComponent = () => {
     };
 
     const loadRestaurants = async () => {
-        try {
-          const data = await fetchData("/restaurants"); // Fetch restaurants data
-          setRestaurants(data);
-        } catch (err) {
-          console.error("Error loading restaurants:", err.message);
-          setError(err.message);
-        }
-      };
-  
-      loadOrders(); // Fetch orders
-      loadRestaurants(); // Fetch restaurants
-    }, []);
+      try {
+        const data = await fetchData("/restaurants"); // Fetch restaurants data
+        setRestaurants(data);
+      } catch (err) {
+        console.error("Error loading restaurants:", err.message);
+        setError(err.message);
+      }
+    };
+
+    loadOrders(); // Fetch orders
+    loadRestaurants(); // Fetch restaurants
+  }, []);
+
+  const handleRestaurantClick = async (restaurantId) => {
+    try {
+      const data = await getMenuItems(restaurantId); // Fetch menu items for the clicked restaurant
+      setMenuItems(data);
+    } catch (err) {
+      console.error("Error loading menu items:", err.message);
+      setError(err.message);
+    }
+  };
+
+  const handleLogout = () => {
+    // Clear the user session/token
+    localStorage.removeItem('token');
+    // Redirect to the landing page after logout
+    navigate('/'); // Replace '/' with your landing page route if different
+  };
+
+  const slideSidebar = () => {
+    setIsSidebarActive(!isSidebarActive);
+  };
 
   return (
     <div className="dashboard-wrapper">
-      <aside className="sidebar">
+      <button onClick={slideSidebar} className="sidebar-button">
+        {isSidebarActive ? "Hide Sidebar" : "Show Sidebar"}
+      </button>
+      <aside className={`sidebar ${isSidebarActive ? 'active' : ''}`}>
         <ul className="sidebar-nav">
           <li>
             <a href="#home">
@@ -82,71 +104,39 @@ const DashboardComponent = () => {
             </a>
           </li>
           <li>
-            <a href="#grocery">
-              <FontAwesomeIcon
-                icon={faShoppingBasket}
-                className="sidebar-icon"
-              />{" "}
-              Grocery
-            </a>
-          </li>
-          <li>
-            <a href="#retail">
-              <FontAwesomeIcon icon={faShoppingBag} className="sidebar-icon" />{" "}
-              Retail
-            </a>
-          </li>
-          <li>
-            <a href="#convenience">
-              <FontAwesomeIcon icon={faStore} className="sidebar-icon" />{" "}
-              Convenience
-            </a>
-          </li>
-          <li>
-            <a href="#alcohol">
-              <FontAwesomeIcon icon={faWineBottle} className="sidebar-icon" />{" "}
-              Alcohol
-            </a>
-          </li>
-          <li>
-            <a href="#offers">
-              <FontAwesomeIcon icon={faTags} className="sidebar-icon" /> Offers
-            </a>
-          </li>
-          <li>
-            <a href="#pets">
-              <FontAwesomeIcon icon={faPaw} className="sidebar-icon" /> Pets
-            </a>
-          </li>
-          <li>
-            <a href="#beauty">
-              <FontAwesomeIcon icon={faHeart} className="sidebar-icon" /> Beauty
-            </a>
-          </li>
-          <li>
-            <a href="#browse">
-              <FontAwesomeIcon icon={faSearch} className="sidebar-icon" />{" "}
-              Browse All
+            <a href="#about">
+              <FontAwesomeIcon icon={faPeopleGroup} className="sidebar-icon" /> About Us
             </a>
           </li>
         </ul>
         <div className="sidebar-footer">
           <ul>
-            <a href="#logout">Logout</a>
+            <button onClick={handleLogout}>Log Out</button>
             <a href="#help">
-              <FontAwesomeIcon
-                icon={faQuestionCircle}
-                className="sidebar-icon"
-              />{" "}
-              Help & Support
+              <FontAwesomeIcon icon={faQuestionCircle} className="sidebar-icon" /> Help & Support
             </a>
           </ul>
         </div>
       </aside>
-      <div className="dashboard-container">
-      <h2 className="dashboard-welcome">Welcome, {username}!</h2>
-      {error && <p className="dashboard-error">{error}</p>}
-      <CardComponent restaurants={restaurants} />
+      <div className={`dashboard-container ${isSidebarActive ? 'shifted' : ''}`}>
+        <h2 className="dashboard-welcome">Welcome, {username}!</h2>
+        {error && <p className="dashboard-error">{error}</p>}
+        <CardComponent
+          restaurants={restaurants}
+          onRestaurantClick={handleRestaurantClick} // Pass the click handler
+        />
+        {menuItems.length > 0 && (
+          <div className="menu-items">
+            <h3>Menu</h3>
+            <ul>
+              {menuItems.map((item) => (
+                <li key={item._id}>
+                  {item.item_name} - ${item.price}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
         <ul className="order-list">
           {orders.map((order) => (
             <li key={order.id} className="order-item">
