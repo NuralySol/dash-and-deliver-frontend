@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { jwtDecode } from 'jwt-decode';
+import jwtDecode from 'jwt-decode';  // Corrected import statement
 import { fetchData } from '../services/loginFetch';
 import { getMenuItems } from '../services/menuAndOrderFetch.js';
 import { getAllAddresses, createAddress, updateAddress, deleteAddress } from '../services/addressFetch.js';
@@ -194,7 +194,7 @@ const DashboardComponent = () => {
           <h3>Menu</h3>
           <ul>
             {menuItems.map(item => (
-              <li key={item._id}>
+              <li key={item._id}>  {/* Ensure each list item has a unique key */}
                 {item.item_name} - ${item.price}
               </li>
             ))}
@@ -202,7 +202,7 @@ const DashboardComponent = () => {
         </MenuComponent>
         <ul className="order-list">
           {orders.map((order) => (
-            <li key={order.id} className="order-item">
+            <li key={order.id} className="order-item">  {/* Ensure each list item has a unique key */}
               {order.description}
             </li>
           ))}
