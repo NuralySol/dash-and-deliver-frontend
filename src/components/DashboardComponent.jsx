@@ -9,6 +9,8 @@ import {
   faQuestionCircle,
   faPeopleGroup,
   faCartPlus,
+  faBars,
+  faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 import CardComponent from "./CardComponent.jsx";
 import MenuComponent from "./MenuComponent.jsx";
@@ -108,10 +110,20 @@ const DashboardComponent = () => {
 
   return (
     <div className="dashboard-wrapper">
-      <button onClick={slideSidebar} className="sidebar-button">
-        {isSidebarActive ? "Hide Sidebar" : "Show Sidebar"}
+      <button
+        onClick={slideSidebar}
+        className="sidebar-button"
+        style={{ display: isSidebarActive ? "none" : "block" }}
+      >
+        <FontAwesomeIcon
+          icon={isSidebarActive ? faTimes : faBars}
+          className="menu-icon"
+        />
       </button>
       <aside className={`sidebar ${isSidebarActive ? "active" : ""}`}>
+        <button onClick={slideSidebar} className="hide-sidebar-button">
+          <FontAwesomeIcon icon={faTimes} className="menu-icon" />
+        </button>
         <ul className="sidebar-nav">
           <li>
             <a href="#home">
