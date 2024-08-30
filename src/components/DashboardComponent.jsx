@@ -101,8 +101,26 @@ const DashboardComponent = () => {
   };
 
   const handleAddToCart = (item) => {
-    setCartItems([...cartItems, item]);
-    setIsCartOpen(true); // The cart opens when an item is added
+    const existingItem = cartItems.findIndex(cartItem => cartItem._id === item._id)
+
+    if (existingItem >= 0) {
+      const updatedCartItems = [...cartItems];
+      updatedCartItems[existingItem].quantity +=1;
+      setCartItems(updatedCartItems);
+    } else {
+      setCartItems([...cartItems, { ...item, quantity: 1 }]);
+    }
+    setIsCartOpen(true);
+  };
+
+  const handleQuantityChange = (itemId, change) => {
+    const updatedCartItems = cartItems.map(item => {
+      if (item._id === itemId) {
+        return { ...item, quantity: Math.max(1, item.quantity + change) };
+      }
+      return item;
+    });
+    setCartItems(updatedCartItems);
   };
 
   const handleCloseCart = () => {
@@ -232,6 +250,11 @@ const DashboardComponent = () => {
                   {groupedItems[restaurantId].map((item, index) => (
                     <li key={index}>
                       {item.item_name} - ${item.price}
+                      <div className="quantity-controls">
+                    <button onClick={() => handleQuantityChange(item._id, -1)}>-</button>
+                    <span>{item.quantity}</span>
+                    <button onClick={() => handleQuantityChange(item._id, 1)}>+</button>
+                  </div>
                     </li>
                   ))}
                 </ul>
