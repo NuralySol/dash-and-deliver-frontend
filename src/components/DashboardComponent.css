@@ -169,11 +169,6 @@
   color: rgb(8, 183, 151);
 }
 
-.dashboard-container.shifted {
-  margin-left: 220px;
-  transition: margin-left 0.3s ease;
-}
-
 .sidebar.active {
   left: 0;
   transition: left 0.3s ease;
