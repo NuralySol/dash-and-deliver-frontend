@@ -21,7 +21,7 @@
   left: 0;
   z-index: 1000;
   display: flex;
-  align-items: center; 
+  align-items: center;
   justify-content: space-between;
 }
 
@@ -73,7 +73,33 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   padding: 20px;
-  z-index: 1001;
+  z-index: 1000;
+}
+
+.restaurant-cart {
+  margin-bottom: 20px;
+}
+
+.restaurant-cart h4 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 5px;
+}
+
+.cart-items-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cart-items-list li {
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.cart-items-list li:last-child {
+  border-bottom: none;
 }
 
 .close-cart-button {
@@ -120,7 +146,7 @@
 }
 
 .add-to-cart-icon {
-  color: #28a745; 
+  color: #28a745;
   cursor: pointer;
   font-size: 1.2em;
   margin-left: 10px;
@@ -128,7 +154,7 @@
 }
 
 .add-to-cart-icon:hover {
-  color: #218838; 
+  color: #218838;
 }
 
 .menu-overlay {

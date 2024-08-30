@@ -109,6 +109,17 @@ const DashboardComponent = () => {
     setIsCartOpen(false);
   };
 
+  const groupItemsByRestaurant = () => {
+    return cartItems.reduce((acc, item) => {
+      const restaurantId = item.restaurant;
+      if (!acc[restaurantId]) {
+        acc[restaurantId] = [];
+      }
+      acc[restaurantId].push(item);
+      return acc;
+    }, {});
+  };
+
   const handleLogout = () => {
     // Clear the user session/token
     localStorage.removeItem("token");
@@ -119,6 +130,8 @@ const DashboardComponent = () => {
   const slideSidebar = () => {
     setIsSidebarActive(!isSidebarActive);
   };
+
+  const groupedItems = groupItemsByRestaurant();
 
   return (
     <div className="dashboard-wrapper">
@@ -212,13 +225,18 @@ const DashboardComponent = () => {
               X
             </button>
             <h3>Your Cart</h3>
-            <ul>
-              {cartItems.map((item, index) => (
-                <li key={index}>
-                  {item.item_name} - ${item.price}
-                </li>
-              ))}
-            </ul>
+            {Object.keys(groupedItems).map((restaurantId) => (
+              <div key={restaurantId} className="restaurant-cart">
+                <h4>{restaurants.find(r => r._id === restaurantId)?.name}</h4>
+                <ul className="cart-items-list">
+                  {groupedItems[restaurantId].map((item, index) => (
+                    <li key={index}>
+                      {item.item_name} - ${item.price}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
         )}
         <ul className="order-list">
