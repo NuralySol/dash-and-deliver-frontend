@@ -11,7 +11,7 @@ import {
   faCartPlus,
   faBars,
   faTimes,
-  faCartShopping
+  faCartShopping,
 } from "@fortawesome/free-solid-svg-icons";
 import CardComponent from "./CardComponent.jsx";
 import MenuComponent from "./MenuComponent.jsx";
@@ -21,11 +21,13 @@ const DashboardComponent = () => {
   const [orders, setOrders] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
+  const [cartItems, setCartItems] = useState([]);
+  const [isCartOpen, setIsCartOpen] = useState([]);
   const [error, setError] = useState(null);
   const [username, setUsername] = useState("");
   const [isSidebarActive, setIsSidebarActive] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token"); // Use "token" key
@@ -98,6 +100,15 @@ const DashboardComponent = () => {
     setIsMenuOpen(false);
   };
 
+  const handleAddToCart = (item) => {
+    setCartItems([...cartItems, item]);
+    setIsCartOpen(true); // The cart opens when an item is added
+  };
+
+  const handleCloseCart = () => {
+    setIsCartOpen(false);
+  };
+
   const handleLogout = () => {
     // Clear the user session/token
     localStorage.removeItem("token");
@@ -112,21 +123,29 @@ const DashboardComponent = () => {
   return (
     <div className="dashboard-wrapper">
       <nav className="navbar">
-      <button
-        onClick={slideSidebar}
-        className="sidebar-button"
-        style={{ display: isSidebarActive ? "none" : "block" }}
-      >
-        <FontAwesomeIcon
-          icon={isSidebarActive ? faTimes : faBars}
-          className="menu-icon"
-        />
-      </button>
+        <button
+          onClick={slideSidebar}
+          className="sidebar-button"
+          style={{ display: isSidebarActive ? "none" : "block" }}
+        >
+          <FontAwesomeIcon
+            icon={isSidebarActive ? faTimes : faBars}
+            className="menu-icon"
+          />
+        </button>
         <div className="navbar-logo">
           <img src="../src/assets/logo.png" alt="DashAndDeliver Logo" />
         </div>
-        <FontAwesomeIcon icon={faCartShopping} className="cart-icon" />
-        </nav>
+        <div
+          onClick={() => setIsCartOpen(true)}
+          className="cart-icon-container"
+        >
+          <FontAwesomeIcon icon={faCartShopping} className="cart-icon" />
+          {cartItems.length > 0 && (
+            <span className="cart-count">{cartItems.length}</span>
+          )}
+        </div>
+      </nav>
       <aside className={`sidebar ${isSidebarActive ? "active" : ""}`}>
         <button onClick={slideSidebar} className="hide-sidebar-button">
           <FontAwesomeIcon icon={faTimes} className="menu-icon" />
@@ -149,10 +168,10 @@ const DashboardComponent = () => {
             <button onClick={handleLogout}>Log Out</button>
             <a href="#help">
               <div>
-              <FontAwesomeIcon
-                icon={faQuestionCircle}
-                className="sidebar-icon"
-              />
+                <FontAwesomeIcon
+                  icon={faQuestionCircle}
+                  className="sidebar-icon"
+                />
               </div>{" "}
               Help & Support
             </a>
@@ -178,6 +197,7 @@ const DashboardComponent = () => {
                   <FontAwesomeIcon
                     icon={faCartPlus}
                     className="add-to-cart-icon"
+                    onClick={() => handleAddToCart(item)}
                   />
                 </li>
               ))}
@@ -186,6 +206,21 @@ const DashboardComponent = () => {
             <p>No menu items available.</p>
           )}
         </MenuComponent>
+        {isCartOpen && (
+          <div className="cart-popup">
+            <button className="close-cart-button" onClick={handleCloseCart}>
+              X
+            </button>
+            <h3>Your Cart</h3>
+            <ul>
+              {cartItems.map((item, index) => (
+                <li key={index}>
+                  {item.item_name} - ${item.price}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
         <ul className="order-list">
           {orders.map((order) => (
             <li key={order.id} className="order-item">
