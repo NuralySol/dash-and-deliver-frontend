@@ -11,6 +11,7 @@ import {
   faCartPlus,
   faBars,
   faTimes,
+  faCartShopping
 } from "@fortawesome/free-solid-svg-icons";
 import CardComponent from "./CardComponent.jsx";
 import MenuComponent from "./MenuComponent.jsx";
@@ -24,7 +25,7 @@ const DashboardComponent = () => {
   const [username, setUsername] = useState("");
   const [isSidebarActive, setIsSidebarActive] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const token = localStorage.getItem("token"); // Use "token" key
@@ -110,6 +111,7 @@ const DashboardComponent = () => {
 
   return (
     <div className="dashboard-wrapper">
+      <nav className="navbar">
       <button
         onClick={slideSidebar}
         className="sidebar-button"
@@ -120,6 +122,11 @@ const DashboardComponent = () => {
           className="menu-icon"
         />
       </button>
+        <div className="navbar-logo">
+          <img src="../src/assets/logo.png" alt="DashAndDeliver Logo" />
+        </div>
+        <FontAwesomeIcon icon={faCartShopping} className="cart-icon" />
+        </nav>
       <aside className={`sidebar ${isSidebarActive ? "active" : ""}`}>
         <button onClick={slideSidebar} className="hide-sidebar-button">
           <FontAwesomeIcon icon={faTimes} className="menu-icon" />
@@ -141,10 +148,12 @@ const DashboardComponent = () => {
           <ul>
             <button onClick={handleLogout}>Log Out</button>
             <a href="#help">
+              <div>
               <FontAwesomeIcon
                 icon={faQuestionCircle}
                 className="sidebar-icon"
-              />{" "}
+              />
+              </div>{" "}
               Help & Support
             </a>
           </ul>
