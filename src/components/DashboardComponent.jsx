@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { jwtDecode } from 'jwt-decode';  
+import { jwtDecode } from 'jwt-decode';  // Correct import
 import { fetchData } from '../services/loginFetch';
 import { getMenuItems } from '../services/menuAndOrderFetch.js';
 import { getAllAddresses, createAddress, updateAddress, deleteAddress } from '../services/addressFetch.js';
@@ -7,19 +7,17 @@ import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faQuestionCircle, faPeopleGroup } from '@fortawesome/free-solid-svg-icons';
 import CardComponent from './CardComponent.jsx';
-import CheckoutComponent from '../components/CheckoutComponent.jsx';
-import MenuComponent from '../components/MenuComponent.jsx';  // <-- Import MenuComponent
+import MenuComponent from '../components/MenuComponent.jsx';  // Import MenuComponent
 import './DashboardComponent.css';
 
 const DashboardComponent = () => {
   const [orders, setOrders] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
-  const [menuItems, setMenuItems] = useState([]);
+  const [menuItems, setMenuItems] = useState([]);  // Initialize as an empty array
   const [error, setError] = useState(null);
   const [username, setUsername] = useState('');
   const [isSidebarActive, setIsSidebarActive] = useState(false);
-  const [showCheckout, setShowCheckout] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);  // <-- State for MenuComponent
+  const [isMenuOpen, setIsMenuOpen] = useState(false);  // State for MenuComponent
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
   const [displayedAddress, setDisplayedAddress] = useState(null);
@@ -89,7 +87,7 @@ const DashboardComponent = () => {
     try {
       const data = await getMenuItems(restaurantId);
       setMenuItems(data);
-      setIsMenuOpen(true);  // <-- Open the MenuComponent when a restaurant is clicked
+      setIsMenuOpen(true);  // Open the MenuComponent when a restaurant is clicked
     } catch (err) {
       console.error('Error loading menu items:', err.message);
       setError(err.message);
@@ -97,7 +95,7 @@ const DashboardComponent = () => {
   };
 
   const handleMenuClose = () => {
-    setIsMenuOpen(false);  // <-- Close the MenuComponent
+    setIsMenuOpen(false);  // Close the MenuComponent
   };
 
   const handleLogout = () => {
@@ -148,7 +146,7 @@ const DashboardComponent = () => {
   };
 
   const handleCheckoutClick = () => {
-    setShowCheckout(true);
+    navigate('/checkout');  // Navigate to the checkout page
   };
 
   return (
@@ -190,14 +188,18 @@ const DashboardComponent = () => {
           restaurants={restaurants}
           onRestaurantClick={handleRestaurantClick}
         />
-        <MenuComponent isOpen={isMenuOpen} onClose={handleMenuClose}>
+        <MenuComponent isOpen={isMenuOpen} onClose={handleMenuClose} menuItems={menuItems}>
           <h3>Menu</h3>
           <ul>
-            {menuItems.map(item => (
-              <li key={item._id}>  {/* Ensure each list item has a unique key */}
-                {item.item_name} - ${item.price}
-              </li>
-            ))}
+            {menuItems.length > 0 ? (
+              menuItems.map(item => (
+                <li key={item._id}>  {/* Ensure each list item has a unique key */}
+                  {item.item_name} - ${item.price}
+                </li>
+              ))
+            ) : (
+              <p>No menu items available.</p>
+            )}
           </ul>
         </MenuComponent>
         <ul className="order-list">
@@ -236,12 +238,6 @@ const DashboardComponent = () => {
         <button onClick={handleCheckoutClick}>
           Proceed to Payment
         </button>
-        {showCheckout && (
-          <div>
-            <h2>Payment Section</h2>
-            <CheckoutComponent />
-          </div>
-        )}
       </div>
     </div>
   );
