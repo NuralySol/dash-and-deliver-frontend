@@ -8,13 +8,13 @@ export const fetchData = async (endpoint, options = {}) => {
     const fullUrl = `${BASE_URL}${endpoint}`;
     console.log('Fetching data from:', fullUrl); // Debugging log for the URL
 
+    // Initialize headers if not provided
+    options.headers = options.headers || {};
+
     // Add Authorization header if token exists
     const token = localStorage.getItem('token');
     if (token) {
-      options.headers = {
-        ...options.headers,
-        'Authorization': `Bearer ${token}`,
-      };
+      options.headers['Authorization'] = `Bearer ${token}`;
     }
 
     const response = await fetch(fullUrl, options);
@@ -23,7 +23,16 @@ export const fetchData = async (endpoint, options = {}) => {
 
     // Check if the response is not ok (e.g., 4xx or 5xx status codes)
     if (!response.ok) {
-      const errorData = await response.json();
+      const contentType = response.headers.get('content-type');
+      let errorData = {};
+
+      // Parse error response as JSON if possible
+      if (contentType && contentType.includes('application/json')) {
+        errorData = await response.json();
+      } else {
+        errorData.message = await response.text(); // Handle non-JSON error messages
+      }
+
       console.error('Error Response:', errorData); // Log the error response
       throw new Error(errorData.message || 'An error occurred');
     }
