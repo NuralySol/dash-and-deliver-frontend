@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import { fetchData } from "../services/loginFetch";
 import { getMenuItems } from "../services/menuAndOrderFetch.js";
+import { getAllAddresses, createAddress, updateAddress, deleteAddress } from "../services/addressFetch.js";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -22,31 +23,32 @@ const DashboardComponent = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
   const [cartItems, setCartItems] = useState([]);
-  const [isCartOpen, setIsCartOpen] = useState([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const [error, setError] = useState(null);
   const [username, setUsername] = useState("");
   const [isSidebarActive, setIsSidebarActive] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [address, setAddress] = useState('');
+  const [city, setCity] = useState('');
+  const [displayedAddress, setDisplayedAddress] = useState(null);
+  const [isUpdating, setIsUpdating] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token"); // Use "token" key
+    const token = localStorage.getItem("token");
 
     if (token) {
       try {
-        // Decode the token and set the username
         const decodedToken = jwtDecode(token);
         setUsername(decodedToken.username || "User");
-        console.log("Token:", token); // Debugging log
-        console.log("Decoded Token:", decodedToken); // Debugging log
       } catch (err) {
         console.error("Token decoding error:", err.message);
         setError("Failed to decode token.");
-        return; // Exit if token decoding fails
+        return;
       }
     } else {
       setError("No token found. Please log in.");
-      return; // Exit if no token is found
+      return;
     }
 
     const loadOrders = async () => {
@@ -54,7 +56,7 @@ const DashboardComponent = () => {
         const data = await fetchData("/orders", {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`, // Attach token in header
+            Authorization: `Bearer ${token}`,
           },
         });
         setOrders(data);
@@ -66,7 +68,7 @@ const DashboardComponent = () => {
 
     const loadRestaurants = async () => {
       try {
-        const data = await fetchData("/restaurants"); // Fetch restaurants data
+        const data = await fetchData("/restaurants");
         setRestaurants(data);
       } catch (err) {
         console.error("Error loading restaurants:", err.message);
@@ -74,8 +76,21 @@ const DashboardComponent = () => {
       }
     };
 
-    loadOrders(); // Fetch orders
-    loadRestaurants(); // Fetch restaurants
+    const loadAddresses = async () => {
+      try {
+        const addresses = await getAllAddresses();
+        if (addresses.length > 0) {
+          setDisplayedAddress(addresses[0]);
+        }
+      } catch (err) {
+        console.error("Error loading addresses:", err.message);
+        setError(err.message);
+      }
+    };
+
+    loadOrders();
+    loadRestaurants();
+    loadAddresses();
   }, []);
 
   const filterMenuItemsByRestaurant = (restaurantId, menuItems) => {
@@ -83,12 +98,10 @@ const DashboardComponent = () => {
   };
 
   const handleRestaurantClick = async (restaurantId) => {
-    console.log(restaurantId);
-
     try {
-      const data = await getMenuItems(); // Fetch all menu items
-      const filteredItems = filterMenuItemsByRestaurant(restaurantId, data); // Filter items by restaurantId
-      setMenuItems(filteredItems); // Set the filtered items
+      const data = await getMenuItems(restaurantId);
+      const filteredItems = filterMenuItemsByRestaurant(restaurantId, data);
+      setMenuItems(filteredItems);
       setIsMenuOpen(true);
     } catch (err) {
       console.error("Error loading menu items:", err.message);
@@ -102,7 +115,7 @@ const DashboardComponent = () => {
 
   const handleAddToCart = (item) => {
     setCartItems([...cartItems, item]);
-    setIsCartOpen(true); // The cart opens when an item is added
+    setIsCartOpen(true);
   };
 
   const handleCloseCart = () => {
@@ -121,14 +134,54 @@ const DashboardComponent = () => {
   };
 
   const handleLogout = () => {
-    // Clear the user session/token
     localStorage.removeItem("token");
-    // Redirect to the landing page after logout
     navigate("/");
   };
 
   const slideSidebar = () => {
     setIsSidebarActive(!isSidebarActive);
+  };
+
+  const handleAddressSubmit = async () => {
+    try {
+      let data;
+      if (isUpdating && displayedAddress) {
+        data = await updateAddress(displayedAddress._id, { address_line: address, city });
+      } else {
+        data = await createAddress({ address_line: address, city });
+      }
+      setDisplayedAddress(data);
+      setAddress('');
+      setCity('');
+      setIsUpdating(false);
+    } catch (error) {
+      console.error('Address operation error:', error.message);
+      setError(error.message);
+    }
+  };
+
+  const handleAddressDelete = async () => {
+    try {
+      if (displayedAddress && displayedAddress._id) {
+        await deleteAddress(displayedAddress._id);
+        setDisplayedAddress(null);
+        setAddress('');
+        setCity('');
+      }
+    } catch (error) {
+      console.error('Error deleting address:', error.message);
+      setError(error.message);
+    }
+  };
+
+  const handleAddressEdit = () => {
+    setAddress(displayedAddress.address_line);
+    setCity(displayedAddress.city);
+    setIsUpdating(true);
+  };
+
+  const handleCheckoutClick = () => {
+    navigate('/checkout', { state: { cartItems } });  // Navigate to the checkout page with cartItems
   };
 
   const groupedItems = groupItemsByRestaurant();
@@ -194,7 +247,12 @@ const DashboardComponent = () => {
       <div
         className={`dashboard-container ${isSidebarActive ? "shifted" : ""}`}
       >
-        <h2 className="dashboard-welcome">Welcome, {username}!</h2>
+        <h2 className="dashboard-welcome">
+          Welcome, {username}!
+          {displayedAddress && (
+            <span> | Address: {displayedAddress.address_line}, {displayedAddress.city}</span>
+          )}
+        </h2>
         {error && <p className="dashboard-error">{error}</p>}
         <CardComponent
           restaurants={restaurants}
@@ -246,6 +304,35 @@ const DashboardComponent = () => {
             </li>
           ))}
         </ul>
+        <div className="address-section">
+          <input
+            type="text"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            placeholder="Enter your address"
+          />
+          <input
+            type="text"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            placeholder="Enter your city (optional)"
+          />
+          <button onClick={handleAddressSubmit}>
+            {isUpdating ? 'Update Address' : 'Submit Address'}
+          </button>
+        </div>
+        {displayedAddress && (
+          <div className="address-display">
+            <h3>Your Address:</h3>
+            <p>{displayedAddress.address_line}</p>
+            {displayedAddress.city && <p>City: {displayedAddress.city}</p>}
+            <button onClick={handleAddressEdit}>Edit Address</button>
+            <button onClick={handleAddressDelete}>Delete Address</button>
+          </div>
+        )}
+        <button onClick={handleCheckoutClick}>
+          Proceed to Payment
+        </button>
       </div>
     </div>
   );

@@ -1,3 +1,4 @@
+//CardComponent.jsx
 import "./CardComponent.css";
 
 const CardComponent = ({ restaurants = [], onRestaurantClick }) => {
