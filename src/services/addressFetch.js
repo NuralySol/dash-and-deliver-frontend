@@ -1,5 +1,3 @@
-import { jwtDecode } from "jwt-decode";
-
 const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}`;
 
 // Function to fetch all addresses
@@ -17,11 +15,12 @@ export const getAllAddresses = async () => {
             },
         });
         if (!response.ok) {
-            throw new Error('Failed to fetch addresses');
+            const error = await response.json();
+            throw new Error(`Failed to fetch addresses: ${error.message}`);
         }
         return response.json();
     } catch (error) {
-        throw new Error('Failed to fetch addresses');
+        throw new Error(`Failed to fetch addresses: ${error.message}`);
     }
 };
 
@@ -40,11 +39,12 @@ export const getAddressById = async (id) => {
             },
         });
         if (!response.ok) {
-            throw new Error('Failed to fetch address by ID');
+            const error = await response.json();
+            throw new Error(`Failed to fetch address by ID: ${error.message}`);
         }
         return response.json();
     } catch (error) {
-        throw new Error('Failed to fetch address by ID');
+        throw new Error(`Failed to fetch address by ID: ${error.message}`);
     }
 };
 
@@ -65,11 +65,12 @@ export const createAddress = async (address) => {
             body: JSON.stringify(address),
         });
         if (!response.ok) {
-            throw new Error('Failed to create address');
+            const error = await response.json();
+            throw new Error(`Failed to create address: ${error.message}`);
         }
         return response.json();
     } catch (error) {
-        throw new Error('Failed to create address');
+        throw new Error(`Failed to create address: ${error.message}`);
     }
 };
 
@@ -90,11 +91,12 @@ export const updateAddress = async (id, address) => {
             body: JSON.stringify(address),
         });
         if (!response.ok) {
-            throw new Error('Failed to update address');
+            const error = await response.json();
+            throw new Error(`Failed to update address: ${error.message}`);
         }
         return response.json();
     } catch (error) {
-        throw new Error('Failed to update address');
+        throw new Error(`Failed to update address: ${error.message}`);
     }
 };
 
@@ -113,12 +115,11 @@ export const deleteAddress = async (id) => {
             },
         });
         if (!response.ok) {
-            throw new Error('Failed to delete address');
+            const error = await response.json();
+            throw new Error(`Failed to delete address: ${error.message}`);
         }
-        return response.json();
+        return { message: 'Address deleted successfully' };
     } catch (error) {
-        throw new Error('Failed to delete address');
+        throw new Error(`Failed to delete address: ${error.message}`);
     }
 };
-
-

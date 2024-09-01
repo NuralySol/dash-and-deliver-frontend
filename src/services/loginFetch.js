@@ -8,6 +8,15 @@ export const fetchData = async (endpoint, options = {}) => {
     const fullUrl = `${BASE_URL}${endpoint}`;
     console.log('Fetching data from:', fullUrl); // Debugging log for the URL
 
+    // Add Authorization header if token exists
+    const token = localStorage.getItem('token');
+    if (token) {
+      options.headers = {
+        ...options.headers,
+        'Authorization': `Bearer ${token}`,
+      };
+    }
+
     const response = await fetch(fullUrl, options);
 
     console.log('Response status:', response.status); // Log the response status

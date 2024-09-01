@@ -1,65 +1,85 @@
 const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}`;
 
-// Menu Items Services
-export const getMenuItems = async () => {
+// Helper function to create headers with authorization
+const createHeaders = () => {
     const token = localStorage.getItem('token');
     if (!token) {
-        console.error('No token found');
-        return;
+        throw new Error('Not authorized, no token found');
     }
+    return {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+    };
+};
 
-    const response = await fetch(`${BASE_URL}/menu-items`, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${token}`, // Attach the token correctly
-            'Content-Type': 'application/json',
-        },
-    });
+// Menu Items Services
+export const getMenuItems = async () => {
+    try {
+        const response = await fetch(`${BASE_URL}/menu-items`, {
+            method: 'GET',
+            headers: createHeaders(),
+        });
 
-    if (!response.ok) {
-        throw new Error('Failed to fetch menu items');
+        if (!response.ok) {
+            throw new Error('Failed to fetch menu items');
+        }
+        return response.json();
+    } catch (error) {
+        console.error('Error fetching menu items:', error.message);
+        throw error;
     }
-    return response.json();
 };
 
 export const createMenuItem = async (menuItemData) => {
-    const response = await fetch(`${BASE_URL}/menu-items`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(menuItemData),
-    });
-    if (!response.ok) {
-        throw new Error('Failed to create menu item');
+    try {
+        const response = await fetch(`${BASE_URL}/menu-items`, {
+            method: 'POST',
+            headers: createHeaders(),
+            body: JSON.stringify(menuItemData),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to create menu item');
+        }
+        return response.json();
+    } catch (error) {
+        console.error('Error creating menu item:', error.message);
+        throw error;
     }
-    return response.json();
 };
 
 // Orders Services
 export const getOrders = async () => {
-    const response = await fetch(`${BASE_URL}/orders`, {
-        headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-    });
-    if (!response.ok) {
-        throw new Error('Failed to fetch orders');
+    try {
+        const response = await fetch(`${BASE_URL}/orders`, {
+            method: 'GET',
+            headers: createHeaders(),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch orders');
+        }
+        return response.json();
+    } catch (error) {
+        console.error('Error fetching orders:', error.message);
+        throw error;
     }
-    return response.json();
 };
 
 export const createOrder = async (orderData) => {
-    const response = await fetch(`${BASE_URL}/orders`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-        body: JSON.stringify(orderData),
-    });
-    if (!response.ok) {
-        throw new Error('Failed to create order');
+    try {
+        const response = await fetch(`${BASE_URL}/orders`, {
+            method: 'POST',
+            headers: createHeaders(),
+            body: JSON.stringify(orderData),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to create order');
+        }
+        return response.json();
+    } catch (error) {
+        console.error('Error creating order:', error.message);
+        throw error;
     }
-    return response.json();
 };
