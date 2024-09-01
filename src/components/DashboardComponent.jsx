@@ -8,40 +8,45 @@ import {
   faHome,
   faQuestionCircle,
   faPeopleGroup,
+  faCartPlus,
+  faBars,
+  faTimes,
+  faCartShopping,
 } from "@fortawesome/free-solid-svg-icons";
 import CardComponent from "./CardComponent.jsx";
+import MenuComponent from "./MenuComponent.jsx";
 import "./DashboardComponent.css";
-import {
-  createAddressController,
-  deleteAddressController, // Import deleteAddressController
-} from "../controllers/addressController";
 
 const DashboardComponent = () => {
   const [orders, setOrders] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
+  const [cartItems, setCartItems] = useState([]);
+  const [isCartOpen, setIsCartOpen] = useState([]);
   const [error, setError] = useState(null);
   const [username, setUsername] = useState("");
   const [isSidebarActive, setIsSidebarActive] = useState(false);
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState(""); // State for city input
-  const [displayedAddress, setDisplayedAddress] = useState(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token"); // Use "token" key
 
     if (token) {
       try {
+        // Decode the token and set the username
         const decodedToken = jwtDecode(token);
         setUsername(decodedToken.username || "User");
+        console.log("Token:", token); // Debugging log
+        console.log("Decoded Token:", decodedToken); // Debugging log
       } catch (err) {
+        console.error("Token decoding error:", err.message);
         setError("Failed to decode token.");
-        return;
+        return; // Exit if token decoding fails
       }
     } else {
       setError("No token found. Please log in.");
-      return;
+      return; // Exit if no token is found
     }
 
     const loadOrders = async () => {
@@ -49,39 +54,76 @@ const DashboardComponent = () => {
         const data = await fetchData("/orders", {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`, // Attach token in header
           },
         });
         setOrders(data);
       } catch (err) {
+        console.error("Error loading orders:", err.message);
         setError(err.message);
       }
     };
 
     const loadRestaurants = async () => {
       try {
-        const data = await fetchData("/restaurants");
+        const data = await fetchData("/restaurants"); // Fetch restaurants data
         setRestaurants(data);
       } catch (err) {
+        console.error("Error loading restaurants:", err.message);
         setError(err.message);
       }
     };
 
-    loadOrders();
-    loadRestaurants();
+    loadOrders(); // Fetch orders
+    loadRestaurants(); // Fetch restaurants
   }, []);
 
+  const filterMenuItemsByRestaurant = (restaurantId, menuItems) => {
+    return menuItems.filter((item) => item.restaurant === restaurantId);
+  };
+
   const handleRestaurantClick = async (restaurantId) => {
+    console.log(restaurantId);
+
     try {
-      const data = await getMenuItems(restaurantId);
-      setMenuItems(data);
+      const data = await getMenuItems(); // Fetch all menu items
+      const filteredItems = filterMenuItemsByRestaurant(restaurantId, data); // Filter items by restaurantId
+      setMenuItems(filteredItems); // Set the filtered items
+      setIsMenuOpen(true);
     } catch (err) {
+      console.error("Error loading menu items:", err.message);
       setError(err.message);
     }
   };
 
+  const handleCloseMenu = () => {
+    setIsMenuOpen(false);
+  };
+
+  const handleAddToCart = (item) => {
+    setCartItems([...cartItems, item]);
+    setIsCartOpen(true); // The cart opens when an item is added
+  };
+
+  const handleCloseCart = () => {
+    setIsCartOpen(false);
+  };
+
+  const groupItemsByRestaurant = () => {
+    return cartItems.reduce((acc, item) => {
+      const restaurantId = item.restaurant;
+      if (!acc[restaurantId]) {
+        acc[restaurantId] = [];
+      }
+      acc[restaurantId].push(item);
+      return acc;
+    }, {});
+  };
+
   const handleLogout = () => {
+    // Clear the user session/token
     localStorage.removeItem("token");
+    // Redirect to the landing page after logout
     navigate("/");
   };
 
@@ -89,39 +131,38 @@ const DashboardComponent = () => {
     setIsSidebarActive(!isSidebarActive);
   };
 
-  const handleAddressSubmit = async () => {
-    try {
-      const createdAddress = await createAddressController(
-        { address_line: address, city }, // Pass both address_line and city
-        setDisplayedAddress,
-        
-      );
-
-      if (createdAddress && createdAddress._id) {
-        setDisplayedAddress(createdAddress);
-      } else {
-        setError();
-      }
-    } catch (error) {
-      setError(error.message);
-    }
-  };
-
-  const handleAddressDelete = async (id) => {
-    try {
-      await deleteAddressController(id, setDisplayedAddress, setError);
-      setDisplayedAddress(null); // Clear the displayed address after deletion
-    } catch (error) {
-      setError(error.message);
-    }
-  };
+  const groupedItems = groupItemsByRestaurant();
 
   return (
     <div className="dashboard-wrapper">
-      <button onClick={slideSidebar} className="sidebar-button">
-        {isSidebarActive ? "Hide Sidebar" : "Show Sidebar"}
-      </button>
+      <nav className="navbar">
+        <button
+          onClick={slideSidebar}
+          className="sidebar-button"
+          style={{ display: isSidebarActive ? "none" : "block" }}
+        >
+          <FontAwesomeIcon
+            icon={isSidebarActive ? faTimes : faBars}
+            className="menu-icon"
+          />
+        </button>
+        <div className="navbar-logo">
+          <img src="../src/assets/logo.png" alt="DashAndDeliver Logo" />
+        </div>
+        <div
+          onClick={() => setIsCartOpen(true)}
+          className="cart-icon-container"
+        >
+          <FontAwesomeIcon icon={faCartShopping} className="cart-icon" />
+          {cartItems.length > 0 && (
+            <span className="cart-count">{cartItems.length}</span>
+          )}
+        </div>
+      </nav>
       <aside className={`sidebar ${isSidebarActive ? "active" : ""}`}>
+        <button onClick={slideSidebar} className="hide-sidebar-button">
+          <FontAwesomeIcon icon={faTimes} className="menu-icon" />
+        </button>
         <ul className="sidebar-nav">
           <li>
             <a href="#home">
@@ -130,7 +171,8 @@ const DashboardComponent = () => {
           </li>
           <li>
             <a href="#about">
-              <FontAwesomeIcon icon={faPeopleGroup} className="sidebar-icon" /> About Us
+              <FontAwesomeIcon icon={faPeopleGroup} className="sidebar-icon" />{" "}
+              About Us
             </a>
           </li>
         </ul>
@@ -138,28 +180,63 @@ const DashboardComponent = () => {
           <ul>
             <button onClick={handleLogout}>Log Out</button>
             <a href="#help">
-              <FontAwesomeIcon icon={faQuestionCircle} className="sidebar-icon" /> Help & Support
+              <div>
+                <FontAwesomeIcon
+                  icon={faQuestionCircle}
+                  className="sidebar-icon"
+                />
+              </div>{" "}
+              Help & Support
             </a>
           </ul>
         </div>
       </aside>
-      <div className={`dashboard-container ${isSidebarActive ? "shifted" : ""}`}>
+      <div
+        className={`dashboard-container ${isSidebarActive ? "shifted" : ""}`}
+      >
         <h2 className="dashboard-welcome">Welcome, {username}!</h2>
         {error && <p className="dashboard-error">{error}</p>}
         <CardComponent
           restaurants={restaurants}
           onRestaurantClick={handleRestaurantClick}
         />
-        {menuItems.length > 0 && (
-          <div className="menu-items">
-            <h3>Menu</h3>
+        <MenuComponent isOpen={isMenuOpen} onClose={handleCloseMenu}>
+          <h3>Menu</h3>
+          {menuItems.length > 0 ? (
             <ul>
               {menuItems.map((item) => (
                 <li key={item._id}>
                   {item.item_name} - ${item.price}
+                  <FontAwesomeIcon
+                    icon={faCartPlus}
+                    className="add-to-cart-icon"
+                    onClick={() => handleAddToCart(item)}
+                  />
                 </li>
               ))}
             </ul>
+          ) : (
+            <p>No menu items available.</p>
+          )}
+        </MenuComponent>
+        {isCartOpen && (
+          <div className="cart-popup">
+            <button className="close-cart-button" onClick={handleCloseCart}>
+              X
+            </button>
+            <h3>Your Cart</h3>
+            {Object.keys(groupedItems).map((restaurantId) => (
+              <div key={restaurantId} className="restaurant-cart">
+                <h4>{restaurants.find(r => r._id === restaurantId)?.name}</h4>
+                <ul className="cart-items-list">
+                  {groupedItems[restaurantId].map((item, index) => (
+                    <li key={index}>
+                      {item.item_name} - ${item.price}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
         )}
         <ul className="order-list">
@@ -169,29 +246,6 @@ const DashboardComponent = () => {
             </li>
           ))}
         </ul>
-        <div className="address-section">
-          <input
-            type="text"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            placeholder="Enter your address"
-          />
-          <input
-            type="text"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            placeholder="Enter your city (optional)"
-          />
-          <button onClick={handleAddressSubmit}>Submit Address</button>
-        </div>
-        {displayedAddress && (
-          <div className="address-display">
-            <h3>Your Address:</h3>
-            <p>{displayedAddress.address_line}</p>
-            {displayedAddress.city && <p>City: {displayedAddress.city}</p>}
-            <button onClick={() => handleAddressDelete(displayedAddress._id)}>Delete Address</button>
-          </div>
-        )}
       </div>
     </div>
   );

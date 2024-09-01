@@ -2,7 +2,20 @@ const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}`;
 
 // Menu Items Services
 export const getMenuItems = async () => {
-    const response = await fetch(`${BASE_URL}/menu-items`);
+    const token = localStorage.getItem('token');
+    if (!token) {
+        console.error('No token found');
+        return;
+    }
+
+    const response = await fetch(`${BASE_URL}/menu-items`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`, // Attach the token correctly
+            'Content-Type': 'application/json',
+        },
+    });
+
     if (!response.ok) {
         throw new Error('Failed to fetch menu items');
     }

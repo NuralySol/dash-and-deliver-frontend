@@ -16,21 +16,21 @@ const HomeComponent = () => {
 
     return (
         <div className="container-home">
-            <h1 className="title-home">DashAndDeliver</h1>
+            <img src="src/assets/logo.png" alt="Logo" className="logo-home" />
             {error && <p className="error-home">Error: {error}</p>}
             {data ? (
                 <div>
-                    <h2 className="message-home">{data.message}</h2>
+                    <h2 className="message-home">Welcome to DashAndDeliver!</h2>
+                    <p className='sub-paragraph'>Your favorite meals, delivered fast and fresh, right to your door.</p>
                 </div>
             ) : (
                 <p className="loading-home">Loading...</p>
             )}
-            {/* Link to RegisterComponent */}
             <p className="register-link">
                 Don't have an account? <Link to="/register">Register here</Link>
             </p>
             <p className="login-link">
-                Have an account already <Link to="/login">Login here</Link>
+                Have an account already? <Link to="/login">Login here</Link>
             </p>
         </div>
     );

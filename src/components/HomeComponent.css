@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Courgette&family=Tangerine:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
 body {
     background-image: url(../assets/home-background.png);
     background-repeat: no-repeat;
@@ -5,35 +8,107 @@ body {
     display: flex;
     justify-content: center;
 }
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: -1;
+}
+
 .container-home {
     text-align: center;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-    color: #333;
-    background-color: rgba(255, 255, 255, 0.644);
+    padding: 40px;
+    background-color: rgba(255, 255, 255, 0.9);
     border-radius: 15px;
     color: #000000;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.3);
+    max-width: 400px;
+    width: 90%;
+    animation: slideIn 1s ease-out;
 }
-.title-home {
-    font-size: 36px;
-    font-weight: bold;
+
+.sub-paragraph {
+    font-size: 16px;
+    color: #555555; 
+    margin-bottom: 40px;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    text-align: center; 
+    text-indent: 20px; 
+}
+
+.logo-home {
+    size: 20px;
+    width: 150px;
+    height: 50px;
     margin-bottom: 20px;
-    color: rgb(8, 183, 151);
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.567);
 }
+
 .message-home {
-    font-size: 24px;
-    margin-bottom: 10px;
-    color: rgb(69, 240, 166);
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.567);
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 40px;
+    color: #025632;
 }
+
+.login-link,
+.register-link {
+    margin: 10px 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.login-link a,
+.register-link a {
+    color: rgb(8, 183, 151);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.login-link a:hover,
+.register-link a:hover {
+    color: #006f5b;
+}
+
 .error-home {
     color: red;
-    font-size: 18px;
+    font-size: 14px;
     margin-top: 10px;
 }
+
 .loading-home {
-    font-size: 20px;
+    font-size: 16px;
     color: #888;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .container-home {
+        padding: 20px 30px;
+        width: 90%;
+    }
+
+    .title-home {
+        font-size: 28px;
+    }
+
+    .primary-button {
+        font-size: 16px;
+        padding: 12px 24px;
+    }
 }

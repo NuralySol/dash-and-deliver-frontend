@@ -1,13 +1,15 @@
 import "./CardComponent.css";
 
-const CardComponent = ({ restaurants = [] }) => {
-
+const CardComponent = ({ restaurants = [], onRestaurantClick }) => {
   return (
     <>
       <h2>Featured Restaurants</h2>
       <div className="restaurant-cards">
         {restaurants.map((restaurant) => (
-          <div key={restaurant.id} className="restaurant-card">
+          <div 
+          key={restaurant._id} className="restaurant-card"
+          onClick={() => onRestaurantClick(restaurant._id)}
+          >
             <img
               src={restaurant.image}
               alt={restaurant.name}
