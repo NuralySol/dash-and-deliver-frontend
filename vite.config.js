@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [react()],
   build: {
     rollupOptions: {
-      external: ['@stripe/stripe-js'], // Add this line to mark @stripe/stripe-js as an external dependency
+      external: ['@stripe/stripe-js', '@stripe/react-stripe-js'], // Add both Stripe packages as external
     },
   },
 });
