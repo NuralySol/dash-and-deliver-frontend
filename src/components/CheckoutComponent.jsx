@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import './CheckoutComponent.css';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+console.log(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 const CheckoutForm = () => {
     const stripe = useStripe();
