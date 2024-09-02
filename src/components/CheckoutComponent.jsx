@@ -4,7 +4,7 @@ import { Elements, CardElement, useStripe, useElements } from '@stripe/react-str
 import { useLocation, useNavigate } from 'react-router-dom';
 import './CheckoutComponent.css';
 
-const stripePromise = loadStripe('pk_test_51PkvJW07FSGtwD9RQZzgAgipw4lpk4TtXuAbtU13BchLLpYUiXnus21IyiAKMojSmPiTuoK8EKiDYdEcQNiUZPQw00iH15hNU6');
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 const CheckoutForm = () => {
     const stripe = useStripe();
@@ -33,7 +33,7 @@ const CheckoutForm = () => {
         const cardElement = elements.getElement(CardElement);
     
         try {
-            const response = await fetch('/payment/create-payment-intent', {
+            const response = await fetch(`${import.meta.env.VITE_BACK_END_SERVER_URL}/payment/create-payment-intent`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
