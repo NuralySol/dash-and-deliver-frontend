@@ -1,5 +1,4 @@
-// Set up BASE_URL from environment variable
-const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}`.replace(/\/+$/, ''); // Ensure no trailing slash
+const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}`;
 
 // Generic function to make API requests
 export const fetchData = async (endpoint, options = {}) => {
