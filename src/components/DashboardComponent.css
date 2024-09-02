@@ -38,7 +38,6 @@ html, body {
 .navbar-search-container {
     display: flex;
     align-items: center;
-    gap: ; /* Space between search bar and cart icon */
     flex: 1; /* Allow search container to take available space */
     padding-right: 100px;
     justify-content: space-between;
@@ -55,12 +54,14 @@ html, body {
 
 /* Cart icon styling */
 .cart-icon {
-    width: 34px; /* Adjust size as needed */
-    height: 33px; /* Adjust size as needed */
-    margin-left: 10px; /* Space between address input and cart icon */
+    width: 35px; /* Adjust size as needed */
+    height: 35px; /* Adjust size as needed */
+    margin-left: 625px; /* Space between address input and cart icon */
     cursor: pointer; /* Add pointer cursor for better UX */
 }
-
+p {
+    font-style: bold;
+}
 /* Cart icon hover effect */
 .cart-icon:hover {
     opacity: 0.8; /* Slightly dim the icon on hover */
@@ -83,7 +84,7 @@ html, body {
     list-style: none;
     display: flex;
     gap: 20px;
-    padding: 0;
+    padding: 10px;
     margin: 0;
     justify-content: center; /* Center the category items */
 }

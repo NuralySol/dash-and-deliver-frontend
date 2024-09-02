@@ -56,7 +56,9 @@ const RegisterComponent = () => {
                     {error && <p className="error">{error}</p>}
                 </form>
             </div>
-            <img src="1-removebg-preview.png" id="logo" alt="Logo" />
+            
+           <img src="../src/assets/dash-logo.png" alt="Logo" className="navbar-logo" id="logo"/>
+            
         </div>
     );
 };

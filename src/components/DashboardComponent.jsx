@@ -110,7 +110,7 @@ const DashboardComponent = () => {
         <div className="dashboard-container">
             <nav className="navbar">
             <a href="/dashboard">
-                <img src="1-removebg-preview.png" alt="Logo" className="navbar-logo" />
+                <img src="../src/assets/dash-logo.png" alt="Logo" className="navbar-logo" />
             </a>
                 <div className="navbar-search-container">
                     <input
@@ -120,116 +120,64 @@ const DashboardComponent = () => {
                         onChange={handleSearchChange}
                         className="search-bar"
                     />
-                    
-                    {/* <div className="address-input-container">
-                        <input
-                            type="text"
-                            placeholder="Enter address..."
-                            value={inputAddress}
-                            onChange={handleInputChange}
-                            className="address-input"
-                        />
-                        <button onClick={handleAddAddress} className="add-address-button">
-                            Add
-                        </button>
-                        <img src="add-to-cart.png" alt="Cart Icon" className="cart-icon" />
-                    </div> */}
 
-                    <div className="location-dropdown">
-                        <button
-                            aria-haspopup="true"
-                            onClick={toggleDropdown}
-                            className="location-button"
-                        >
-                            <span className="location-text">{location || 'Enter address...'}</span>
-                            <span className="dropdown-icon">
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M8 11l4-4H4l4 4z" fill="currentColor"></path>
-                                </svg>
-                            </span>
-                        </button>
-                        {dropdownVisible && (
-                            <div className="dropdown-menu">
-                                <div className="dropdown-item">
-                                    <input
-                                        type="text"
-                                        placeholder="Enter new address..."
-                                        value={inputAddress}
-                                        onChange={handleInputChange}
-                                        className="address-input"
-                                    />
-                                    <button onClick={handleAddAddress} className="add-address-button">
-                                        Add
-                                    </button>
-                                </div>
-                                {savedAddresses.map((addr, index) => (
-                                    <div
-                                        key={index}
-                                        className="dropdown-item"
-                                        onClick={() => handleLocationChange(addr)}
-                                    >
-                                        {addr}
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-                    </div>
-                    <img src="cart.png" alt="Cart Icon" className="cart-icon" />
+                    <img src="../src/assets/cart.png" alt="Cart Icon" className="cart-icon" />
+                    <p>Cart</p>
                 </div>
             </nav>
 
             <nav className="category-navbar">
                 <ul className="category-menu">
                     <li onClick={() => handleCategoryChange('Fast Food')} className={selectedCategory === 'Fast Food' ? 'active' : ''}>
-                        <img src="fast-food.png" alt="Fast Food" />
+                        <img src="../src/assets/fast-food.png" alt="Fast Food" />
                         <span>Fast Food</span>
                     </li>
                     <li onClick={() => handleCategoryChange('Indian')} className={selectedCategory === 'Indian' ? 'active' : ''}>
-                        <img src="papri-chaat.png" alt="Indian" />
+                        <img src="../src/assets/papri-chaat.png" alt="Indian" />
                         <span>Indian</span>
                     </li>
                     <li onClick={() => handleCategoryChange('Chinese')} className={selectedCategory === 'Chinese' ? 'active' : ''}>
-                        <img src="buns.png" alt="Chinese" />
+                        <img src="../src/assets/buns.png" alt="Chinese" />
                         <span>Chinese</span>
                     </li>
                     <li onClick={() => handleCategoryChange('Italian')} className={selectedCategory === 'Italian' ? 'active' : ''}>
-                        <img src="spaghetti.png" alt="Italian" />
+                        <img src="../src/assets/spaghetti.png" alt="Italian" />
                         <span>Italian</span>
                     </li>
                     <li onClick={() => handleCategoryChange('Mexican')} className={selectedCategory === 'Mexican' ? 'active' : ''}>
-                        <img src="mexican-food.png" alt="Mexican" />
+                        <img src="../src/assets/mexican-food.png" alt="Mexican" />
                         <span>Mexican</span>
                     </li>
                     <li onClick={() => handleCategoryChange('Breakfast')} className={selectedCategory === 'Breakfast' ? 'active' : ''}>
-                        <img src="breakfast.png" alt="Breakfast" />
+                        <img src="../src/assets/breakfast.png" alt="Breakfast" />
                         <span>Breakfast</span>
                     </li>
                     <li onClick={() => handleCategoryChange('Vegan')} className={selectedCategory === 'Vegan' ? 'active' : ''}>
-                        <img src="vegetarian.png" alt="Vegan" />
+                        <img src="../src/assets/vegetarian.png" alt="Vegan" />
                         <span>Vegan</span>
                     </li>
                     <li onClick={() => handleCategoryChange('Thai')} className={selectedCategory === 'Thai' ? 'active' : ''}>
-                        <img src="mango.png" alt="Thai" />
+                        <img src="../src/assets/mango.png" alt="Thai" />
                         <span>Thai</span>
                     </li>
                     <li onClick={() => handleCategoryChange('Halal')} className={selectedCategory === 'Halal' ? 'active' : ''}>
-                        <img src="halal.png" alt="Halal" />
+                        <img src="../src/assets/halal.png" alt="Halal" />
                         <span>Halal</span>
                     </li>
                     <li onClick={() => handleCategoryChange('Kosher')} className={selectedCategory === 'Kosher' ? 'active' : ''}>
-                        <img src="kosher.png" alt="Kosher" />
+                        <img src="../src/assets/kosher.png" alt="Kosher" />
                         <span>Kosher</span>
                     </li>
                     <li onClick={() => handleCategoryChange('Salad')} className={selectedCategory === 'Salad' ? 'active' : ''}>
-                        <img src="salad.png" alt="Salad" />
+                        <img src="../src/assets/salad.png" alt="Salad" />
                         <span>Salad</span>
                     </li>
                     <li onClick={() => handleCategoryChange('Seafood')} className={selectedCategory === 'Seafood' ? 'active' : ''}>
-                        <img src="seafood.png" alt="Seafood" />
+                        <img src="../src/assets/seafood.png" alt="Seafood" />
                         <span>Seafood</span>
                     </li>
                     <li onClick={() => handleCategoryChange('All')} className={selectedCategory === 'All' ? 'active' : ''}>
-                        <img src="all.png" alt="All" />
+                        <img src="../src/assets/all.png" alt="All" />
                         <span>All</span>
                     </li>
                 </ul>

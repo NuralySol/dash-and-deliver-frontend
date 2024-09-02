@@ -69,7 +69,9 @@ const LoginComponent = () => {
             <div className={`overlay ${isLoading ? 'active' : ''}`}>
                 <div className="spinner"></div>
             </div>
-            <img src="1-removebg-preview.png" id="logo" alt="Logo" />
+            <h4>
+            <img src="../src/assets/dash-logo.png" alt="Logo" className="navbar-logo" id="logo" />
+            </h4>
         </div>
     );
 };
