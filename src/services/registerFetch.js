@@ -10,9 +10,9 @@ export const registerUser = async (userData) => {
   };
 
   const endpoint = `/auth/register`;
+
   try {
-    const response = await fetchData(endpoint, options); 
-    return response;
+    return await fetchData(endpoint, options);
   } catch (error) {
     console.error('Registration failed:', error);
     throw error;

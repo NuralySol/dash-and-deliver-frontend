@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Courgette&family=Tangerine:wght@400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Courgette&family=Tangerine:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
 
 body {
     background-image: url(../assets/home-background.png);
@@ -10,7 +10,7 @@ body {
 }
 
 body::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -34,11 +34,12 @@ body::before {
 
 .sub-paragraph {
     font-size: 16px;
-    color: #555555; 
+    color: #555555;
     margin-bottom: 40px;
-    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    text-align: center; 
-    text-indent: 20px; 
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+        "Lucida Sans", Arial, sans-serif;
+    text-align: center;
+    text-indent: 20px;
 }
 
 .logo-home {
@@ -91,6 +92,7 @@ body::before {
         opacity: 0;
         transform: translateY(50px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);

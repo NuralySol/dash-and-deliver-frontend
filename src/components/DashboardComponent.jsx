@@ -3,7 +3,7 @@ import { jwtDecode } from "jwt-decode";
 import { fetchData } from "../services/loginFetch";
 import { getMenuItems } from "../services/menuAndOrderFetch.js";
 import { getAllAddresses, createAddress, updateAddress, deleteAddress } from "../services/addressFetch.js";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHome,
@@ -16,6 +16,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import CardComponent from "./CardComponent.jsx";
 import MenuComponent from "./MenuComponent.jsx";
+import Modal from "./ModalComponent.jsx";
+import DeliveryModal from "./DeliveryComponent.jsx";
 import "./DashboardComponent.css";
 
 const DashboardComponent = () => {
@@ -32,7 +34,14 @@ const DashboardComponent = () => {
   const [city, setCity] = useState('');
   const [displayedAddress, setDisplayedAddress] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [isDeliveryModalOpen, setIsDeliveryModalOpen] = useState(false);
+  const [deliveryTime, setDeliveryTime] = useState(null);
+  const [isAboutUsModalOpen, setIsAboutUsModalOpen] = useState(false);
+  const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -91,7 +100,14 @@ const DashboardComponent = () => {
     loadOrders();
     loadRestaurants();
     loadAddresses();
-  }, []);
+
+    if (location.state?.paymentSuccess) {
+      const randomDeliveryTime = Math.floor(Math.random() * (30 - 5 + 1)) + 5;
+      setDeliveryTime(randomDeliveryTime);
+      setIsDeliveryModalOpen(true);
+      navigate('/dashboard', { replace: true, state: {} });
+    }
+  }, [location.state?.paymentSuccess, navigate]);
 
   const filterMenuItemsByRestaurant = (restaurantId, menuItems) => {
     return menuItems.filter((item) => item.restaurant === restaurantId);
@@ -116,6 +132,11 @@ const DashboardComponent = () => {
   const handleAddToCart = (item) => {
     setCartItems([...cartItems, item]);
     setIsCartOpen(true);
+  };
+
+  const handleClearCart = () => {
+    setCartItems([]);
+    setIsCartOpen(false);
   };
 
   const handleCloseCart = () => {
@@ -181,7 +202,33 @@ const DashboardComponent = () => {
   };
 
   const handleCheckoutClick = () => {
-    navigate('/checkout', { state: { cartItems } });  // Navigate to the checkout page with cartItems
+    if (cartItems.length === 0) {
+      setModalMessage('Please select items before proceeding to payment.');
+      setIsModalOpen(true);
+      return;
+    }
+    if (!displayedAddress) {
+      setModalMessage('Please enter your address before proceeding to payment.');
+      setIsModalOpen(true);
+      return;
+    }
+    navigate('/checkout', { state: { cartItems } });
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleDeliveryModalClose = () => {
+    setIsDeliveryModalOpen(false);
+  };
+
+  const handleAboutUsModalClose = () => {
+    setIsAboutUsModalOpen(false);
+  };
+
+  const handleHelpModalClose = () => {
+    setIsHelpModalOpen(false);
   };
 
   const groupedItems = groupItemsByRestaurant();
@@ -218,35 +265,32 @@ const DashboardComponent = () => {
         </button>
         <ul className="sidebar-nav">
           <li>
-            <a href="#home">
+            <button onClick={() => navigate('/')}>
               <FontAwesomeIcon icon={faHome} className="sidebar-icon" /> Home
-            </a>
+            </button>
           </li>
           <li>
-            <a href="#about">
-              <FontAwesomeIcon icon={faPeopleGroup} className="sidebar-icon" />{" "}
-              About Us
-            </a>
+            <button onClick={() => setIsAboutUsModalOpen(true)}>
+              <FontAwesomeIcon icon={faPeopleGroup} className="sidebar-icon" /> About Us
+            </button>
           </li>
         </ul>
         <div className="sidebar-footer">
           <ul>
             <button onClick={handleLogout}>Log Out</button>
-            <a href="#help">
+            <button onClick={() => setIsHelpModalOpen(true)} className="help-support-button">
               <div>
                 <FontAwesomeIcon
                   icon={faQuestionCircle}
                   className="sidebar-icon"
                 />
-              </div>{" "}
+              </div>
               Help & Support
-            </a>
+            </button>
           </ul>
         </div>
       </aside>
-      <div
-        className={`dashboard-container ${isSidebarActive ? "shifted" : ""}`}
-      >
+      <div className={`dashboard-container ${isSidebarActive ? "shifted" : ""}`}>
         <h2 className="dashboard-welcome">
           Welcome, {username}!
           {displayedAddress && (
@@ -295,6 +339,47 @@ const DashboardComponent = () => {
                 </ul>
               </div>
             ))}
+            <button
+              onClick={handleClearCart}
+              className="clear-cart-button"
+              style={{
+                display: 'block',
+                width: '80%',
+                padding: '8px',
+                backgroundColor: '#ff8800',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '12px',
+                fontSize: '14px',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                transition: 'background-color 0.3s ease, transform 0.2s ease',
+                textAlign: 'center',
+                margin: '10px auto',
+              }}
+            >
+              Clear Cart
+            </button>
+            <button
+              onClick={handleCheckoutClick}
+              className="checkout-button"
+              style={{
+                display: 'block',
+                width: '100%',
+                padding: '15px',
+                backgroundColor: 'rgb(8, 183, 151)',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '8px',
+                fontSize: '18px',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                transition: 'background-color 0.3s ease, transform 0.2s ease',
+                textAlign: 'center',
+              }}
+            >
+              Proceed to Payment
+            </button>
           </div>
         )}
         <ul className="order-list">
@@ -305,19 +390,39 @@ const DashboardComponent = () => {
           ))}
         </ul>
         <div className="address-section">
-          <input
-            type="text"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            placeholder="Enter your address"
-          />
-          <input
-            type="text"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            placeholder="Enter your city (optional)"
-          />
-          <button onClick={handleAddressSubmit}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px', marginBottom: '20px', maxWidth: '500px', margin: '0 auto' }}>
+            <input
+              type="text"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder="Enter your address"
+              style={{
+                flex: 1,
+                padding: '12px',
+                borderRadius: '8px',
+                border: '1px solid #ddd',
+                fontSize: '16px',
+                backgroundColor: '#f9f9f9',
+                transition: 'border-color 0.3s ease',
+              }}
+            />
+            <input
+              type="text"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              placeholder="Enter your city (optional)"
+              style={{
+                flex: 0.4,
+                padding: '12px',
+                borderRadius: '8px',
+                border: '1px solid #ddd',
+                fontSize: '16px',
+                backgroundColor: '#f9f9f9',
+                transition: 'border-color 0.3s ease',
+              }}
+            />
+          </div>
+          <button className="submit-address-button" onClick={handleAddressSubmit}>
             {isUpdating ? 'Update Address' : 'Submit Address'}
           </button>
         </div>
@@ -326,13 +431,37 @@ const DashboardComponent = () => {
             <h3>Your Address:</h3>
             <p>{displayedAddress.address_line}</p>
             {displayedAddress.city && <p>City: {displayedAddress.city}</p>}
-            <button onClick={handleAddressEdit}>Edit Address</button>
-            <button onClick={handleAddressDelete}>Delete Address</button>
+            <button className="edit-address-button" onClick={handleAddressEdit}>Edit Address</button>
+            <button className="delete-address-button" onClick={handleAddressDelete}>Delete Address</button>
           </div>
         )}
-        <button onClick={handleCheckoutClick}>
-          Proceed to Payment
-        </button>
+        <Modal
+          isOpen={isModalOpen}
+          message={modalMessage}
+          onClose={handleModalClose}
+        />
+        <DeliveryModal
+          isOpen={isDeliveryModalOpen}
+          message={`Thank you for ordering! Your delivery will arrive in approximately ${deliveryTime} minutes at ${displayedAddress?.address_line}, ${displayedAddress?.city}.`}
+          onClose={handleDeliveryModalClose}
+        />
+        <Modal
+          isOpen={isAboutUsModalOpen}
+          message="This project was created by Nuraly, Wendy, Junnat and Robert at GA."
+          onClose={handleAboutUsModalClose}
+        />
+        <Modal
+          isOpen={isHelpModalOpen}
+          message={(
+            <ul>
+              <li>Please use your mouse to navigate and choose a restaurant.</li>
+              <li>Enter your address.</li>
+              <li>Add chosen items to the cart.</li>
+              <li>Proceed to payment for delivery.</li>
+            </ul>
+          )}
+          onClose={handleHelpModalClose}
+        />
       </div>
     </div>
   );
