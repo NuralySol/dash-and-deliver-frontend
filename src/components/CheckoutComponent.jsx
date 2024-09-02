@@ -23,16 +23,16 @@ const CheckoutForm = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-    
+
         if (!stripe || !elements) {
             console.error("Stripe.js has not yet loaded.");
             return;
         }
-    
+
         setIsProcessing(true);
-    
+
         const cardElement = elements.getElement(CardElement);
-    
+
         try {
             const response = await fetch(`${import.meta.env.VITE_BACK_END_SERVER_URL}/payment/create-payment-intent`, {
                 method: 'POST',
@@ -42,17 +42,17 @@ const CheckoutForm = () => {
                 },
                 body: JSON.stringify({ amount: calculateTotal() }),
             });
-    
+
             const { clientSecret } = await response.json();
-    
+
             const paymentResult = await stripe.confirmCardPayment(clientSecret, {
                 payment_method: {
                     card: cardElement,
                 },
             });
-    
+
             setIsProcessing(false);
-    
+
             if (paymentResult.error) {
                 setPaymentStatus('Payment failed: ' + paymentResult.error.message);
             } else if (paymentResult.paymentIntent.status === 'succeeded') {
