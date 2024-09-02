@@ -1,6 +1,6 @@
-import { useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './CheckoutComponent.css';
 
