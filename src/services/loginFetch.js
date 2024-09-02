@@ -1,27 +1,12 @@
-const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}`;
+const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}`.replace(/\/+$/, '');
 
 export const fetchData = async (endpoint, options = {}) => {
   try {
     const fullUrl = `${BASE_URL}${endpoint}`;
-    options.headers = options.headers || {};
-
-    const token = localStorage.getItem('token');
-    if (token) {
-      options.headers['Authorization'] = `Bearer ${token}`;
-    }
-
     const response = await fetch(fullUrl, options);
 
     if (!response.ok) {
-      const contentType = response.headers.get('content-type');
-      let errorData = {};
-
-      if (contentType && contentType.includes('application/json')) {
-        errorData = await response.json();
-      } else {
-        errorData.message = await response.text();
-      }
-
+      const errorData = await response.json();
       console.error('Error Response:', errorData);
       throw new Error(errorData.message || 'An error occurred');
     }
@@ -31,4 +16,22 @@ export const fetchData = async (endpoint, options = {}) => {
     console.error('Fetch error:', error.message);
     throw error;
   }
+};
+
+export const loginUser = async (credentials) => {
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(credentials),
+  };
+
+  const response = await fetchData('/auth/login', options);
+
+  if (response.token) {
+    localStorage.setItem('token', response.token);
+  }
+
+  return response;
 };
