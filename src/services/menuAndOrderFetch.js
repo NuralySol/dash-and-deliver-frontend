@@ -1,6 +1,5 @@
 const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}`;
 
-// Helper function to create headers with authorization
 const createHeaders = () => {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -12,7 +11,6 @@ const createHeaders = () => {
     };
 };
 
-// Menu Items Services
 export const getMenuItems = async () => {
     try {
         const response = await fetch(`${BASE_URL}/menu-items`, {
@@ -48,7 +46,6 @@ export const createMenuItem = async (menuItemData) => {
     }
 };
 
-// Orders Services
 export const getOrders = async () => {
     try {
         const response = await fetch(`${BASE_URL}/orders`, {

@@ -15,13 +15,13 @@ const RegisterComponent = () => {
         const registeredUser = await handleRegister(userData);
 
         if (registeredUser) {
-            navigate('/login'); // Redirect to dashboard after successful registration
+            navigate('/login'); 
         }
     };
 
     return (
         <div>
-            <NavBar /> {/* Navigation bar */}
+            <NavBar /> 
             <div className="register-container">
                 <h2>Register</h2>
                 <form onSubmit={handleSubmit}>
@@ -59,7 +59,7 @@ const NavBar = () => {
             <ul>
                 <li><a href="/">Home</a></li>
                 <li><a href="/register">Register</a></li>
-                <li><a href="/login">Login</a></li> {/* Add login link */}
+                <li><a href="/login">Login</a></li> 
             </ul>
         </nav>
     );

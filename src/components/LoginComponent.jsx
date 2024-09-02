@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { loginUser } from '../services/loginFetch.js';
 import { useNavigate } from 'react-router-dom'; 
 
-
 const LoginComponent = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -31,7 +30,7 @@ const LoginComponent = () => {
 
     return (
         <div>
-            <NavBar /> {/* Navigation bar */}
+            <NavBar /> 
             <div className="login-container">
                 <h2>Login</h2>
                 <form onSubmit={handleSubmit}>
@@ -69,7 +68,7 @@ const NavBar = () => {
             <ul>
                 <li><a href="/">Home</a></li>
                 <li><a href="/register">Register</a></li>
-                <li><a href="/login">Login</a></li> {/* Add login link */}
+                <li><a href="/login">Login</a></li> 
             </ul>
         </nav>
     );

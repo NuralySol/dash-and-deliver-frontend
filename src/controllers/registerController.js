@@ -1,5 +1,5 @@
-import { useState } from 'react';  // Standard React import
-import { registerUser } from '../services/registerFetch.js'; // Ensure correct relative path
+import { useState } from 'react';  
+import { registerUser } from '../services/registerFetch.js'; 
 
 export const RegisterController = () => {
   const [isLoading, setIsLoading] = useState(false);

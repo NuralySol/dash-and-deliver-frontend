@@ -14,10 +14,9 @@ const CheckoutForm = () => {
     const [paymentStatus, setPaymentStatus] = useState('');
     const [isProcessing, setIsProcessing] = useState(false);
 
-    const { cartItems } = location.state || {}; // Get cartItems passed from the dashboard
-
+    const { cartItems } = location.state || {};
     const calculateTotal = () => {
-        return cartItems.reduce((total, item) => total + item.price, 0) * 100; // Convert to cents
+        return cartItems.reduce((total, item) => total + item.price, 0) * 100;
     };
 
     const handleSubmit = async (event) => {
@@ -58,7 +57,7 @@ const CheckoutForm = () => {
                 setPaymentStatus('Payment succeeded!');
                 setTimeout(() => {
                     navigate('/dashboard', { state: { paymentSuccess: true } });
-                }, 2000); // Redirect to dashboard after 2 seconds
+                }, 2000);
             }
         } catch (error) {
             console.error('Error during payment:', error);

@@ -11,7 +11,6 @@ const LoginComponent = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Check if user is logged in by looking for a token or session in local storage
         const token = localStorage.getItem('authToken');
         if (token) {
             setIsLoggedIn(true);
@@ -26,10 +25,9 @@ const LoginComponent = () => {
             const credentials = { username, password };
             const loggedInUser = await loginUser(credentials);
             if (loggedInUser) {
-                // Save token or user information in local storage
                 localStorage.setItem('authToken', loggedInUser.token);
                 setIsLoggedIn(true);
-                navigate('/dashboard'); // Redirect to dashboard after successful login
+                navigate('/dashboard'); 
             }
         } catch (err) {
             setError(err.message);
@@ -39,15 +37,14 @@ const LoginComponent = () => {
     };
 
     const handleLogout = () => {
-        // Clear the user session/token
         localStorage.removeItem('authToken');
         setIsLoggedIn(false);
-        navigate('/'); // Redirect to home or login page after logout
+        navigate('/'); 
     };
 
     return (
         <div>
-            <NavBar isLoggedIn={isLoggedIn} handleLogout={handleLogout} /> {/* Pass logout function and state */}
+            <NavBar isLoggedIn={isLoggedIn} handleLogout={handleLogout} /> 
             <div className="login-container">
                 <h2>Login</h2>
                 <form onSubmit={handleSubmit}>
