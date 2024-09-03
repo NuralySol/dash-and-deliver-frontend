@@ -247,7 +247,7 @@ const DashboardComponent = () => {
           />
         </button>
         <div className="navbar-logo">
-          <img src="../src/assets/logo.png" alt="DashAndDeliver Logo" />
+          <img src="../assets/logo.png" alt="DashAndDeliver Logo" />
         </div>
         <div
           onClick={() => setIsCartOpen(true)}
