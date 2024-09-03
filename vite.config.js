@@ -8,7 +8,7 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      external: ['@stripe/stripe-js', '@stripe/react-stripe-js'],
+      // Do not include these as external, allow Vite to bundle them
     },
   },
 });
