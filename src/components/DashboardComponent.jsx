@@ -293,9 +293,6 @@ const DashboardComponent = () => {
       <div className={`dashboard-container ${isSidebarActive ? "shifted" : ""}`}>
         <h2 className="dashboard-welcome">
           Welcome, {username}!
-          {displayedAddress && (
-            <span> | Address: {displayedAddress.address_line}, {displayedAddress.city}</span>
-          )}
         </h2>
         {error && <p className="dashboard-error">{error}</p>}
         <CardComponent

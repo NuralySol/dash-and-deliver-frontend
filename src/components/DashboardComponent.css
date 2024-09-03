@@ -319,7 +319,7 @@
 .dashboard-container {
   display: flex;
   flex-direction: column;
-  margin-left: 0;
+  margin-left: -45px;
   width: 1400px;
   padding: 20px;
   background-color: rgb(255, 255, 255);
