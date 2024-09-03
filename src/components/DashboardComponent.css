@@ -3,7 +3,6 @@
 .dashboard-wrapper {
   display: flex;
   min-height: 100vh;
-  width: 100%;
 }
 
 .navbar {
@@ -169,8 +168,9 @@
 }
 
 .menu-content {
-  background-color: #fff;
-  padding: 20px;
+  background-image: url(../assets/menu.png);
+  background-size: cover;
+  padding: 30px 20px;
   border-radius: 8px;
   max-width: 500px;
   width: 100%;
@@ -319,8 +319,6 @@
 .dashboard-container {
   display: flex;
   flex-direction: column;
-  margin-left: 0;
-  width: 1400px;
   padding: 20px;
   background-color: rgb(255, 255, 255);
   color: rgb(0, 0, 0);
@@ -358,25 +356,6 @@ ul {
   padding-inline-start: 0;
 }
 
-.quantity-controls {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  margin-top: 10px;
-}
-
-.quantity-controls button {
-  background-color: #f0f0f0;
-  border: none;
-  padding: 5px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.quantity-controls button:hover {
-  background-color: #ddd;
-}
-
 .dashboard-wrapper {
   font-family: "Roboto", sans-serif;
   color: #333;
@@ -399,6 +378,7 @@ ul {
   align-items: center;
   width: 100%;
   max-width: 500px;
+  margin: 10px 500px;
 }
 
 .address-section h3 {
@@ -479,6 +459,7 @@ ul {
   width: 100%;
   max-width: 500px;
   text-align: center;
+  margin: 0 500px;
 }
 
 .address-display h3 {
@@ -515,6 +496,7 @@ ul {
   font-size: 1rem;
   font-family: 'Helvetica Neue', Arial, sans-serif;
   transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 0;
 }
 
 .search-button:hover {
@@ -523,11 +505,12 @@ ul {
 }
 
 .selected-restaurant {
+  font-family: 'Times New Roman', Times, serif;
   margin-left: auto;
   margin-right: 20px;
   font-size: 1.2rem;
   font-weight: bold;
-  color: #444444;
+  color: #ffffff;
   display: flex;
   align-items: center;
   font-family: 'Helvetica Neue', Arial, sans-serif;

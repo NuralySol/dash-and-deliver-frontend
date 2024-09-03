@@ -66,8 +66,10 @@ const DashboardComponent = () => {
       setMenuItems([]);
       setSelectedRestaurantName("");
     }
+    setTimeout(() => {
+      setSearchQuery("");
+    }, 10000);
   };
-
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -534,7 +536,31 @@ const DashboardComponent = () => {
         />
         <Modal
           isOpen={isAboutUsModalOpen}
-          message="This project was created by Nuraly, Wendy, Junnat and Robert at GA."
+          message={
+            <span>
+              This project was created by Nuraly, Wendy, Junnat, and Robert at
+              GA.
+              <div>
+                See more from each of us:
+                <ul>
+                  <li>
+                    <a href="https://github.com/NuralySol">Nuraly's Github</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/wendy-silva">Wendy's Github</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/junnatc">Junnat's Github</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/RobertAFranco">
+                      Robert's Github
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </span>
+          }
           onClose={handleAboutUsModalClose}
         />
         <Modal

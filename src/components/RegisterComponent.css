@@ -2,11 +2,11 @@ input {
     justify-content: center;
 }
 
-.register-container {
+.register-form {
     width: 100%;
     max-width: 400px;
     margin: 50px auto;
-    padding: 20px;
+    padding: 50px;
     font-family: 'Arial', sans-serif;
     background-color: rgba(255, 255, 255, 0.644);
     border-radius: 15px;
@@ -14,65 +14,61 @@ input {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
 }
 
-
-.register-container h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333333;
-    font-size: 2rem;
+.login-form{
+        width: 100%;
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 50px;
+        font-family: 'Arial', sans-serif;
+        background-color: rgba(255, 255, 255, 0.644);
+        border-radius: 15px;
+        color: #000000;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
 }
-
 
 .form-group {
     margin-bottom: 20px;
+    animation: slideIn 1s ease-out;
 }
-
-
 .form-group label {
     display: block;
     margin-bottom: 8px;
     color: #555555;
     font-weight: bold;
 }
-
-
 .form-group input {
-    width: 95%;
-    padding: 7px;
-    border: 1px solid #cccccc;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #CCCCCC;
     border-radius: 5px;
     font-size: 1rem;
     color: #333333;
 }
-
 button[type="submit"] {
     width: 100%;
     padding: 10px;
     background-color: rgb(8, 183, 151);
-    color: #ffffff;
+    color: #FFFFFF;
     border: none;
     border-radius: 5px;
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin-top: 0px;
 }
-
 button[type="submit"]:hover {
-    background-color: #45a049;
+    background-color: rgb(11, 163, 135);
 }
-
 button[type="submit"]:disabled {
-    background-color: #9c9c9c;
+    background-color: #9C9C9C;
     cursor: not-allowed;
 }
-
 .error {
-    color: #ff4c4c;
+    color: #FF4C4C;
     margin-top: 10px;
     font-size: 0.9rem;
     text-align: center;
 }
-
 .navbar {
     width: 100%;
     background-color: #333333;
@@ -84,7 +80,6 @@ button[type="submit"]:disabled {
     left: 0;
     z-index: 1000;
 }
-
 .navbar ul {
     list-style-type: none;
     margin: 0;
@@ -92,18 +87,15 @@ button[type="submit"]:disabled {
     display: flex;
     justify-content: space-evenly;
 }
-
 .navbar ul li {
     margin: 0 15px;
 }
-
 .navbar ul li a {
-    color: #ffffff;
+    color: #FFFFFF;
     text-decoration: none;
     font-size: 1rem;
     transition: color 0.3s ease;
 }
-
 .navbar ul li a:hover {
     color: #4CAF50;
 }
