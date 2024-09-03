@@ -14,6 +14,7 @@ import {
   faBars,
   faTimes,
   faCartShopping,
+  faTrashAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import CardComponent from "./CardComponent.jsx";
 import MenuComponent from "./MenuComponent.jsx";
@@ -41,8 +42,51 @@ const DashboardComponent = () => {
   const [deliveryTime, setDeliveryTime] = useState(null);
   const [isAboutUsModalOpen, setIsAboutUsModalOpen] = useState(false);
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedRestaurantName, setSelectedRestaurantName] = useState("");
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+
+    if (searchQuery.trim() === "") {
+      setMenuItems([]);
+      setSelectedRestaurantName("");
+      return;
+    }
+
+    const results = restaurants.filter((restaurant) =>
+      restaurant.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      restaurant.address.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    if (results.length > 0) {
+      setSelectedRestaurantName(results[0].name);
+      handleRestaurantClick(results[0]._id);
+    } else {
+      setMenuItems([]);
+      setSelectedRestaurantName("");
+    }
+  };
+
   const navigate = useNavigate();
   const location = useLocation();
+
+  const NY_TAX_RATE = 0.08875;
+  const DELIVERY_FEE_RATE = 0.20;
+
+  const calculateTotals = () => {
+    const subtotal = cartItems.reduce((sum, item) => sum + item.price, 0);
+    const tax = subtotal * NY_TAX_RATE;
+    const deliveryFee = subtotal * DELIVERY_FEE_RATE;
+    const total = subtotal + tax + deliveryFee;
+
+    return {
+      subtotal,
+      tax,
+      deliveryFee,
+      total,
+    };
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -116,6 +160,9 @@ const DashboardComponent = () => {
 
   const handleRestaurantClick = async (restaurantId) => {
     try {
+      const restaurant = restaurants.find(r => r._id === restaurantId);
+      setSelectedRestaurantName(restaurant?.name || "");
+
       const data = await getMenuItems(restaurantId);
       const filteredItems = filterMenuItemsByRestaurant(restaurantId, data);
       setMenuItems(filteredItems);
@@ -144,6 +191,10 @@ const DashboardComponent = () => {
     setIsCartOpen(false);
   };
 
+  const handleRemoveFromCart = (itemIndex) => {
+    setCartItems(cartItems.filter((_, index) => index !== itemIndex));
+  };
+
   const groupItemsByRestaurant = () => {
     return cartItems.reduce((acc, item) => {
       const restaurantId = item.restaurant;
@@ -157,7 +208,7 @@ const DashboardComponent = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    navigate("/");
+    navigate("/login");
   };
 
   const slideSidebar = () => {
@@ -250,6 +301,24 @@ const DashboardComponent = () => {
         <div className="navbar-logo">
           <img src={logo} alt="DashAndDeliver Logo" />
         </div>
+
+        {/* Search Bar */}
+        <form className="search-form" onSubmit={handleSearch}>
+          <input
+            type="text"
+            placeholder="Search restaurants..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="search-input"
+          />
+          <button type="submit" className="search-button">Search</button>
+        </form>
+
+        {selectedRestaurantName && (
+          <div className="selected-restaurant">
+            <span>{selectedRestaurantName}</span>
+          </div>
+        )}
         <div
           onClick={() => setIsCartOpen(true)}
           className="cart-icon-container"
@@ -334,12 +403,29 @@ const DashboardComponent = () => {
                 <ul className="cart-items-list">
                   {groupedItems[restaurantId].map((item, index) => (
                     <li key={index}>
-                      {item.item_name} - ${item.price}
+                      {item.item_name} - ${item.price.toFixed(2)}
+                      <FontAwesomeIcon
+                        icon={faTrashAlt}
+                        className="remove-from-cart-icon"
+                        onClick={() => handleRemoveFromCart(index)}
+                        style={{ marginLeft: '10px', cursor: 'pointer', color: 'red' }}
+                      />
                     </li>
                   ))}
                 </ul>
               </div>
             ))}
+            {cartItems.length > 0 && (() => {
+              const { subtotal, tax, deliveryFee, total } = calculateTotals();
+              return (
+                <div className="cart-summary">
+                  <p>Subtotal: ${subtotal.toFixed(2)}</p>
+                  <p>Tax (8.875%): ${tax.toFixed(2)}</p>
+                  <p>Delivery Fee (20%): ${deliveryFee.toFixed(2)}</p>
+                  <h4>Total: ${total.toFixed(2)}</h4>
+                </div>
+              );
+            })()}
             <button
               onClick={handleClearCart}
               className="clear-cart-button"
