@@ -19,7 +19,7 @@ const LoginComponent = () => {
             const loggedInUser = await loginUser(credentials);
 
             if (loggedInUser) {
-                navigate('/dashboard'); // Redirect to dashboard after successful login
+                navigate('/dashboard'); 
             }
         } catch (err) {
             setError(err.message);
