@@ -495,7 +495,9 @@ const DashboardComponent = () => {
                     <a href="https://github.com/junnatc">Junnat's Github</a>
                   </li>
                   <li>
-                    <a href="https://github.com/RobertAFranco">Robert's Github</a>
+                    <a href="https://github.com/RobertAFranco">
+                      Robert's Github
+                    </a>
                   </li>
                 </ul>
               </div>
@@ -508,11 +510,23 @@ const DashboardComponent = () => {
           message={
             <ul>
               <li>
-                Please use your mouse to navigate and choose a restaurant.
+                Navigate Restaurants: Use your mouse to browse through the list
+                of available restaurants. Click on a restaurant to view its
+                menu.
               </li>
-              <li>Enter your address.</li>
-              <li>Add chosen items to the cart.</li>
-              <li>Proceed to payment for delivery.</li>
+              <li>
+                Enter Your Address: Input your delivery address in the
+                designated field to ensure accurate delivery.
+              </li>
+              <li>
+                Add Items to Your Cart: Select your desired menu items and click
+                the "Add to Cart" button.
+              </li>
+              <li>
+                Proceed to Payment: Once you've added all your items, click on
+                the cart icon to review your selections. Follow the prompts to
+                proceed to payment and complete your order for delivery.
+              </li>
             </ul>
           }
           onClose={handleHelpModalClose}

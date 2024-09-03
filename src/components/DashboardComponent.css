@@ -315,6 +315,10 @@
   cursor: pointer;
 }
 
+.modal-message li {
+  margin-bottom: 20px;
+}
+
 .dashboard-container {
   display: flex;
   flex-direction: column;
