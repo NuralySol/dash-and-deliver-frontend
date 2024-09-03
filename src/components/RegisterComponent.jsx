@@ -22,9 +22,8 @@ const RegisterComponent = () => {
     return (
         <div>
             <NavBar /> 
-            <div className="register-container">
-                <h2>Register</h2>
                 <form onSubmit={handleSubmit}>
+                <h2>Register</h2>
                     <div className="form-group">
                         <label>Username:</label>
                         <input
@@ -49,7 +48,6 @@ const RegisterComponent = () => {
                     {error && <p className="error">{error}</p>}
                 </form>
             </div>
-        </div>
     );
 };
 
