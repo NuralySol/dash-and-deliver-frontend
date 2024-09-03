@@ -1,25 +1,21 @@
 import { useState } from 'react';
 import { loginUser } from '../services/loginFetch.js';
-import { useNavigate } from 'react-router-dom'; 
-
+import { useNavigate } from 'react-router-dom';
 const LoginComponent = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
         setError(null);
-
         try {
             const credentials = { username, password };
             const loggedInUser = await loginUser(credentials);
-
             if (loggedInUser) {
-                navigate('/dashboard'); 
+                navigate('/dashboard'); // Redirect to dashboard after successful login
             }
         } catch (err) {
             setError(err.message);
@@ -27,13 +23,12 @@ const LoginComponent = () => {
             setIsLoading(false);
         }
     };
-
     return (
         <div>
-            <NavBar /> 
+            <NavBar />
             <div className="login-container">
+                <form onSubmit={handleSubmit} className='login-form'>
                 <h2>Login</h2>
-                <form onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label>Username:</label>
                         <input
@@ -61,14 +56,13 @@ const LoginComponent = () => {
         </div>
     );
 };
-
 const NavBar = () => {
     return (
         <nav className="navbar">
             <ul>
                 <li><a href="/">Home</a></li>
                 <li><a href="/register">Register</a></li>
-                <li><a href="/login">Login</a></li> 
+                <li><a href="/login">Login</a></li>
             </ul>
         </nav>
     );
