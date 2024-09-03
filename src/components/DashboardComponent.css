@@ -200,7 +200,7 @@
 
 .sidebar {
   width: 200px;
-  background-color: #ffffffe0;
+  background-color: #ffffffe7;
   height: 100vh;
   position: fixed;
   z-index: 1100;
@@ -295,21 +295,20 @@
   text-align: center;
   margin-top: auto;
   width: 100%;
-  background-image: url(../assets/sidebar.jpeg);
   padding: 20px 0;
 }
 
 .sidebar-footer a {
-  color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
   text-decoration: none;
   text-align: center;
   font-size: 12px;
   font-weight: 500;
   display: block;
   padding: 10px 15px;
-  transition: color 0.3s;
   width: 100%;
   box-sizing: border-box;
+  border-color: white;
 }
 
 .sidebar-footer a:hover {
@@ -356,25 +355,6 @@
 
 ul {
   padding-inline-start: 0;
-}
-
-.quantity-controls {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  margin-top: 10px;
-}
-
-.quantity-controls button {
-  background-color: #f0f0f0;
-  border: none;
-  padding: 5px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.quantity-controls button:hover {
-  background-color: #ddd;
 }
 
 .dashboard-wrapper {

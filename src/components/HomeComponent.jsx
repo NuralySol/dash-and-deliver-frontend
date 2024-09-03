@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'; 
 import { fetchDataController } from '../controllers/homeController.js'; 
+import logo from '@/assets/logo.png';
 import './HomeComponent.css';  
 
 const HomeComponent = () => {
@@ -16,7 +17,7 @@ const HomeComponent = () => {
 
     return (
         <div className="container-home">
-            <img src="src/assets/logo.png" alt="Logo" className="logo-home" />
+            <img src={logo} alt="DashAndDeliver Logo" />
             {error && <p className="error-home">Error: {error}</p>}
             {data ? (
                 <div>
