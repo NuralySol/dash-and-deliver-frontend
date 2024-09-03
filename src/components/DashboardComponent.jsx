@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import logo from '@/assets/logo.png';
 import { jwtDecode } from "jwt-decode";
 import { fetchData } from "../services/loginFetch";
 import { getMenuItems } from "../services/menuAndOrderFetch.js";
@@ -247,7 +248,7 @@ const DashboardComponent = () => {
           />
         </button>
         <div className="navbar-logo">
-          <img src="../src/assets/logo.png" alt="DashAndDeliver Logo" />
+          <img src={logo} alt="DashAndDeliver Logo" />
         </div>
         <div
           onClick={() => setIsCartOpen(true)}

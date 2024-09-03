@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
@@ -8,7 +9,12 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      external: ['@stripe/stripe-js', '@stripe/react-stripe-js'],
+      // Do not include these as external, allow Vite to bundle them
+    },
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
     },
   },
 });
