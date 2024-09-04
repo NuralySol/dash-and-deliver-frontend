@@ -2,7 +2,7 @@
 > DashAndDeliver is a food delivery app that connects you with restaurants, allowing you to easily order your favorite meals. With just a few taps, you can browse menus, place your order, and track your delivery.
 ## Links
 ## Screenshot
-[Landing page]!(./src/assets/Dashboard.png)
+![Landing page](./src/assets/Dashboard.png)
 ***DashAndDeliver Link:***
 .[dash-deliver-app-fronend-link](https://dash-and-deliver.netlify.app)
 ***Backend Repo:*** 
