@@ -1,59 +1,21 @@
-# DashAndDeliver App
+![DashAndDeliver](./src/assets/Dashboard.png)
+## DashAndDeliver
+> DashAndDeliver is a food delivery app that connects you with restaurants, allowing you to easily order your favorite meals. With just a few taps, you can browse menus, place your order, and track your delivery.
+## Links
+***DashAndDeliver Link:***
+***Planning Link:*** [Proposal](/PROPOSAL.md)
+***Backend Repo:*** [dash-and-deliver-backend](https://github.com/NuralySol/dash-and-deliver-backend)
+## Attributions
+*(Was used for guidance and explanation)*
+[ChatGPT](https://chatgpt.com)
+*(Was used to render images)*
+[Imgur](https://imgur.com)
+## Technologies Used
+- JavaScript
+- CSS
+- React
+- MongoDB
 
-## User Story
-
-### MVP
-
-### 1. Guest User Orders
-
-- Story 1:
-  As a guest user,
-  I want to browse the menu and place an order without signing in,
-  So that I can quickly order food without creating an account.
-
-- Story 2:
-  As a guest user,
-  I want to see the fees applied to my order at checkout, and correct total
-  displayed to me.
-
-- Story 3:
-  As a guest user,
-  I want to receive an order confirmation after placing an order,
-  So that I know my order was successfully placed.
-
-- Story 4: (Stretch Goal Now)
-  As a guest user,
-  I want to filter the available restaurants and dishes by region,
-  So that I can see options that are available for delivery to my location.
-
-- Story 5:
-  As a guest user,
-  I want to add items from multiple restaurants to my order,
-  So that I can order from different places in a single transaction.
-  I want to be able to edit my order/delete items.
-
-### 2. Sign-Up/Sign-In User Experience
-
-- Story 1:
-  As a user,
-  I want to sign up or sign in easily.
-
-- Story 2:
-  As a signed-in user,
-  I want to add items from multiple restaurants to my order,
-  So that I can order from different places in a single transaction.
-
-### 3. User Notifications
-
-- Story 1:
-  As a signed-in user,
-  I want to receive notifications when my order is being prepared and when it’s out for delivery,
-  So that I am informed about the status of my order.
-
-- Story 2:
-  As a guest user,
-  I want to receive a confirmation of my order details,
-  So that I have a record of my purchases.
 
 ## Stretch Goals
 
