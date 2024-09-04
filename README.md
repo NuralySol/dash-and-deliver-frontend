@@ -1,10 +1,10 @@
-![DashAndDeliver](./src/assets/Dashboard.png)
 ## DashAndDeliver
 > DashAndDeliver is a food delivery app that connects you with restaurants, allowing you to easily order your favorite meals. With just a few taps, you can browse menus, place your order, and track your delivery.
 ## Links
 ***DashAndDeliver Link:***
-***Planning Link:*** [Proposal](/PROPOSAL.md)
-***Backend Repo:*** [dash-and-deliver-backend](https://github.com/NuralySol/dash-and-deliver-backend)
+.[dash-deliver-app-fronend-link](https://dash-and-deliver.netlify.app)
+***Backend Repo:*** 
+[dash-and-deliver-backend](https://github.com/NuralySol/dash-and-deliver-backend)
 ## Attributions
 *(Was used for guidance and explanation)*
 [ChatGPT](https://chatgpt.com)
@@ -15,8 +15,7 @@
 - CSS
 - React
 - MongoDB
-
-
+- 
 ## Stretch Goals
 
 - **Pre-Order Scheduling:** Allow customers to schedule their orders well in advance, not just for immediate delivery. This could be useful for planning meals around specific events or times.
@@ -157,6 +156,3 @@ Javascript
 
 - Presentation day
 
-## Technologies used
-
-MERN Stack (MongoDB, Express, React, Node.JS/Javascript)
